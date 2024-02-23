@@ -25,6 +25,9 @@ data class PortalProfile(
     @SerializedName("edu_specialization")
     val eduSpecialization: PortalEduSpecialization?,
 
+    @SerializedName("edu_qualification")
+    val eduQualification: PortalEduSpecialization?,
+
     @SerializedName("edu_direction")
     val eduDirection: PortalEduDirection?,
 

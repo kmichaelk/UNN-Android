@@ -166,15 +166,17 @@ fun UserDetailScreen(
                                 headlineContent = { Text("Направление подготовки") },
                                 supportingContent = { Text(profile.eduDirection!!.title) }
                             ) }
-                            item { ListItem(
-                                leadingContent = { Icon(Icons.Default.Science, contentDescription = null) },
-                                headlineContent = { Text("Направленность (профиль)") },
-                                supportingContent = { Text(profile.eduSpecialization!!.title) }
-                            ) }
+                            profile.eduSpecialization?.let{
+                                item { ListItem(
+                                    leadingContent = { Icon(Icons.Default.Science, contentDescription = null) },
+                                    headlineContent = { Text("Направленность (профиль)") },
+                                    supportingContent = { Text(it.title) }
+                                ) }
+                            }
                             item { ListItem(
                                 leadingContent = { Icon(Icons.Default.TransferWithinAStation, contentDescription = null) },
                                 headlineContent = { Text("Квалификация") },
-                                supportingContent = { Text(profile.eduLevel!!) }
+                                supportingContent = { Text(profile.eduQualification!!.title) }
                             ) }
                             item { ListItem(
                                 leadingContent = { Icon(Icons.Default.Group, contentDescription = null) },
