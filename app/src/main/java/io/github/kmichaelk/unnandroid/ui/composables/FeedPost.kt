@@ -106,11 +106,7 @@ fun FeedPost(
             ) {
                 Spacer(Modifier.width(48.dp))
 
-                TextButton(onClick = {
-                    if (post.commentsCount > 0) {
-                        onOpenComments()
-                    }
-                }) {
+                TextButton(onClick = onOpenComments) {
                     Icon(Icons.Default.Comment, contentDescription = "Комментарии")
                     Spacer(Modifier.width(6.dp))
                     Text("${post.commentsCount}")
