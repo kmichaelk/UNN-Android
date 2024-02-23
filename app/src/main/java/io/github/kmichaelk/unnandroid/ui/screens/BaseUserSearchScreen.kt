@@ -41,6 +41,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import io.github.kmichaelk.unnandroid.models.portal.PortalPerson
 import io.github.kmichaelk.unnandroid.ui.composables.AppDrawer
+import io.github.kmichaelk.unnandroid.ui.composables.FancyEmpty
 import io.github.kmichaelk.unnandroid.ui.composables.FancyError
 import io.github.kmichaelk.unnandroid.ui.composables.FancyLoading
 import io.github.kmichaelk.unnandroid.ui.viewmodels.UserSearchScreenViewModel
@@ -136,7 +137,13 @@ fun <T> UserSearchScreen(
                         viewModel.load()
                     })
                 } else if (results != null) {
-                    LazyColumn(Modifier.fillMaxSize().imePadding()) {
+                    if (results!!.items.isEmpty()) {
+                        FancyEmpty()
+                    }
+                    LazyColumn(
+                        Modifier
+                            .fillMaxSize()
+                            .imePadding()) {
                         items(results!!.items, key = { it.id }) {
                             render(it)
                         }
