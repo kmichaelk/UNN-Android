@@ -95,7 +95,7 @@ fun PostScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        uriHandler.openUri(PortalService.BASE_URL + post.url)
+                        uriHandler.openUri(PortalService.P_URL + post.url)
                     }) {
                         Icon(Icons.Default.OpenInNew, contentDescription = "Открыть в браузере")
                     }

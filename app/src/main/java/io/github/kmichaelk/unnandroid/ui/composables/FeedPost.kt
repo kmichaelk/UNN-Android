@@ -63,7 +63,7 @@ fun FeedPost(
                 Box(Modifier.size(48.dp)) {
                     post.author.avatarUrl?.let {
                         AsyncImage(
-                            model = PortalService.BASE_URL + it,
+                            model = PortalService.P_URL + it,
                             contentDescription = null,
                             modifier = Modifier
                                 .fillMaxSize()
@@ -90,7 +90,7 @@ fun FeedPost(
             post.attachmentUrl?.let {
                 Spacer(Modifier.height(16.dp))
                 AsyncImage(
-                    model = PortalService.BASE_URL + it,
+                    model = PortalService.P_URL + it,
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
                     modifier = Modifier.fillMaxWidth()

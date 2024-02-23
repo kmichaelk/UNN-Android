@@ -55,7 +55,7 @@ fun PostComment(
                 Box(Modifier.size(48.dp)) {
                     comment.author.avatarUrl?.let {
                         AsyncImage(
-                            model = PortalService.BASE_URL + it,
+                            model = PortalService.P_URL + it,
                             contentDescription = null,
                             modifier = Modifier
                                 .fillMaxSize()

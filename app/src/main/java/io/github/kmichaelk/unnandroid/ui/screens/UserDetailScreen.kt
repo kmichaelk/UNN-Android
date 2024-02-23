@@ -114,7 +114,7 @@ fun UserDetailScreen(
                     ) {
                         it.avatar.urlOriginal?.let { url ->
                             AsyncImage(
-                                model = PortalService.BASE_URL + url,
+                                model = PortalService.P_URL + url,
                                 contentDescription = null,
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Crop,
@@ -141,7 +141,7 @@ fun UserDetailScreen(
                         },
                         actions = {
                             IconButton(onClick = {
-                                uriHandler.openUri("${PortalService.BASE_URL}/app/user/view/${it.id}")
+                                uriHandler.openUri("${PortalService.P_URL}/app/user/view/${it.id}")
                             }) {
                                 Icon(Icons.Default.OpenInNew, contentDescription = "Открыть в браузере")
                             }

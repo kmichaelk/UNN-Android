@@ -29,6 +29,8 @@ interface PortalService {
         const val BASE_URL = "https://portal.unn.ru/"
 
         const val DATE_FORMAT = "yyyy-MM-dd"
+
+        const val P_URL = "https://portal.unn.ru"
     }
 
     @POST("auth/?login=yes")

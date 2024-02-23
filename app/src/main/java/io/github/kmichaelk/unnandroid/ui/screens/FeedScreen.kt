@@ -106,7 +106,7 @@ fun FeedScreen(
                     },
                     actions = {
                         IconButton(onClick = {
-                            uriHandler.openUri(PortalService.BASE_URL)
+                            uriHandler.openUri(PortalService.P_URL)
                         }) {
                             Icon(Icons.Default.OpenInNew, contentDescription = "Открыть в браузере")
                         }

@@ -60,7 +60,7 @@ fun EmployeeSearchScreen(
                     Box(Modifier.size(48.dp)) {
                         if (it.avatar.isAvailable()) {
                             AsyncImage(
-                                model = PortalService.BASE_URL + it.avatar.urlThumbnail,
+                                model = PortalService.P_URL + it.avatar.urlThumbnail,
                                 contentDescription = null,
                                 modifier = Modifier
                                     .fillMaxSize()
