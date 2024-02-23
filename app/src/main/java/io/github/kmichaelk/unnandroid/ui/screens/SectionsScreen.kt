@@ -76,7 +76,7 @@ fun SectionsScreen(
     }
 
     val dateFormat = remember {
-        SimpleDateFormat("d MMMM", Locale("RU"))
+        SimpleDateFormat("d MMMM (EEEE)", Locale("RU"))
     }
 
     StaticDataScreen(
