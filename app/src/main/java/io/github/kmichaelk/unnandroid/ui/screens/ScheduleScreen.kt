@@ -92,6 +92,7 @@ import io.github.kmichaelk.unnandroid.ui.composables.ScheduleSearch
 import io.github.kmichaelk.unnandroid.ui.extensions.icon
 import io.github.kmichaelk.unnandroid.ui.viewmodels.ScheduleScreenViewModel
 import io.github.kmichaelk.unnandroid.R
+import io.github.kmichaelk.unnandroid.ui.composables.FancyEmpty
 import io.github.kmichaelk.unnandroid.ui.composables.FancyError
 import io.github.kmichaelk.unnandroid.ui.composables.FancyLoading
 import kotlinx.coroutines.launch
@@ -307,63 +308,73 @@ fun ScheduleScreen(
                     .zIndex(-20f)
                     .nestedScroll(pullToRefreshState.nestedScrollConnection)
             ) {
-                if (state.error != null) {
+                state.error?.let {
                     FancyError(
                         error = state.error!!,
                         onRetry = {
                             pullToRefreshState.startRefresh()
                         }
                     )
-                } else if (state.entity == null) {
-                    FancyNotice(painter = painterResource(id = R.drawable.schedule)) {
-                        Text(
-                            "Выберите группу для просмотра расписания",
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.width(200.dp)
-                        )
-                    }
-                } else if (state.schedule == null) {
-                    FancyLoading(painter = painterResource(id = R.drawable.schedule))
-                }
-                CompositionLocalProvider(LocalDensity provides Density(LocalDensity.current.density * 0.9f)) {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        state.schedule?.days?.map { day ->
-                            stickyHeader {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 4.dp),
-                                    contentAlignment = Alignment.Center
+                } ?: (
+                    if (state.entity == null) {
+                        FancyNotice(painter = painterResource(id = R.drawable.schedule)) {
+                            Text(
+                                "Выберите группу для просмотра расписания",
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.width(200.dp)
+                            )
+                        }
+                    } else if (state.schedule == null) {
+                        FancyLoading(painter = painterResource(id = R.drawable.schedule))
+                    } else {
+                        val schedule = state.schedule!!
+                        if (schedule.days.isEmpty()) {
+                            FancyEmpty(painter = painterResource(R.drawable.schedule))
+                        } else {
+                            CompositionLocalProvider(
+                                LocalDensity provides Density(LocalDensity.current.density * 0.9f)
+                            ) {
+                                LazyColumn(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalArrangement = Arrangement.spacedBy(12.dp),
                                 ) {
-                                    OutlinedCard(
-                                        colors = CardDefaults.cardColors(
-                                            containerColor = MaterialTheme.colorScheme.surfaceBright,
-                                        ),
-                                    ) {
-                                        Text(
-                                            dateFormat.format(day.date),
-                                            modifier = Modifier.padding(
-                                                horizontal = 8.dp,
-                                                vertical = 4.dp
-                                            ),
-                                        )
+                                    schedule.days.map { day ->
+                                        stickyHeader {
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(vertical = 4.dp),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                OutlinedCard(
+                                                    colors = CardDefaults.cardColors(
+                                                        containerColor = MaterialTheme.colorScheme.surfaceBright,
+                                                    ),
+                                                ) {
+                                                    Text(
+                                                        dateFormat.format(day.date),
+                                                        modifier = Modifier.padding(
+                                                            horizontal = 8.dp,
+                                                            vertical = 4.dp
+                                                        ),
+                                                    )
+                                                }
+                                            }
+                                        }
+                                        items(day.lessons) { lesson ->
+                                            ScheduleLessonItem(
+                                                lesson = lesson,
+                                                snackBarHostState = snackBarHostState,
+                                                snackbarScope = coroutineScope
+                                            )
+                                        }
                                     }
+                                    item { Spacer(Modifier.height(32.dp)) }
                                 }
                             }
-                            items(day.lessons) { lesson ->
-                                ScheduleLessonItem(
-                                    lesson = lesson,
-                                    snackBarHostState = snackBarHostState,
-                                    snackbarScope = coroutineScope
-                                )
-                            }
                         }
-                        item { Spacer(Modifier.height(32.dp)) }
                     }
-                }
+                )
 
                 PullToRefreshContainer(
                     modifier = Modifier
