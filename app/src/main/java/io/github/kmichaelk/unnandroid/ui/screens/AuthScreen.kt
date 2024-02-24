@@ -73,6 +73,7 @@ fun AuthScreen(
         ) {
             Column(
                 modifier = Modifier
+                    .align(Alignment.Center)
                     .padding(horizontal = 16.dp, vertical = 8.dp)
                     .fillMaxHeight()
                     .imePadding()
