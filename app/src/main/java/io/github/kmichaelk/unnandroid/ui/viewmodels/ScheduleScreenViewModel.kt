@@ -46,15 +46,14 @@ class ScheduleScreenViewModel @Inject constructor(
     ))
     val uiState = _uiState.asStateFlow()
 
-    fun load(entity: ScheduleEntity) : Job {
-        if (bookmarks.value.isEmpty()) {
-            addBookmark(entity)
+    fun load(): Job? {
+        val entity = _uiState.value.entity ?: return null
+
+        _uiState.update {
+            it.copy(
+                error = null,
+            )
         }
-        _uiState.update { it.copy(
-            entity = entity,
-            error = null,
-            //schedule = null
-        ) }
         return viewModelScope.launch(Dispatchers.IO) {
             try {
                 val schedule = scheduleClient.loadSchedule(entity, _uiState.value.range) {
@@ -73,35 +72,43 @@ class ScheduleScreenViewModel @Inject constructor(
                     }
                     it
                 }
-                _uiState.update { it.copy(
-                    schedule = schedule
-                ) }
+                _uiState.update {
+                    it.copy(
+                        schedule = schedule
+                    )
+                }
             } catch (ex: Exception) {
                 Timber.e("Failed to load schedule", ex)
-                _uiState.update { it.copy(
-                    error = UiError.from(ex),
-                ) }
+                _uiState.update {
+                    it.copy(
+                        error = UiError.from(ex),
+                    )
+                }
             }
         }
     }
 
-    fun reload() : Job? =
-        if (_uiState.value.entity != null) {
-            load(_uiState.value.entity!!)
-        } else { null }
+    fun setEntity(entity: ScheduleEntity) {
+        if (bookmarks.value.isEmpty()) {
+            addBookmark(entity)
+        }
+        _uiState.update {
+            it.copy(
+                entity = entity,
+                schedule = null,
+            )
+        }
+    }
 
-    fun setEntity(entity: ScheduleEntity) = _uiState.update { it.copy(
-        entity = entity,
-        schedule = null,
-    ) }
-
-    fun setRange(range: ScheduleDateRange) : Boolean {
+    fun setRange(range: ScheduleDateRange): Boolean {
         if (_uiState.value.range == range) {
             return false
         }
-        _uiState.update { it.copy(
-            range = range
-        ) }
+        _uiState.update {
+            it.copy(
+                range = range
+            )
+        }
         return true
     }
 
@@ -140,9 +147,7 @@ class ScheduleScreenViewModel @Inject constructor(
     fun isDefaultBookmark(entity: ScheduleEntity) =
         _bookmarks.value.indexOf(entity) == 0
 
-    private fun saveBookmarks() {
-        prefs.edit {
-            putString(PREF_BOOKMARKS, gson.toJson(_bookmarks.value))
-        }
+    private fun saveBookmarks() = prefs.edit {
+        putString(PREF_BOOKMARKS, gson.toJson(_bookmarks.value))
     }
 }

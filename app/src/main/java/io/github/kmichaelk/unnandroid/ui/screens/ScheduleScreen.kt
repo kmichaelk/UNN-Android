@@ -129,7 +129,7 @@ fun ScheduleScreen(
 
     if (pullToRefreshState.isRefreshing) {
         LaunchedEffect(true) {
-            viewModel.reload()?.join()
+            viewModel.load()?.join()
             pullToRefreshState.endRefresh()
         }
     }
@@ -181,7 +181,10 @@ fun ScheduleScreen(
                                 Text("Поиск расписания")
                             }
                         },
-                        onSelect = viewModel::load
+                        onSelect = {
+                            viewModel.setEntity(it)
+                            pullToRefreshState.startRefresh()
+                        }
                     )
                 }
             },
