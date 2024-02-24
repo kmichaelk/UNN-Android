@@ -5,4 +5,5 @@ data class PortalFeedComment(
     val author: PortalFeedUser,
     val datetime: String,
     val html: String,
+    val attachmentUrl: String?,
 )

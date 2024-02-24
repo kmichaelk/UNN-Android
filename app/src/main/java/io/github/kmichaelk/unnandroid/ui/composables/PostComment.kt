@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -76,6 +77,16 @@ fun PostComment(
                         uriHandler.openUri(it)
                     } catch (ignore: Exception) {}
                 })
+            }
+
+            comment.attachmentUrl?.let {
+                Spacer(Modifier.height(16.dp))
+                AsyncImage(
+                    model = PortalService.P_URL + it,
+                    contentDescription = null,
+                    contentScale = ContentScale.FillWidth,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
 
             Spacer(Modifier.height(16.dp))

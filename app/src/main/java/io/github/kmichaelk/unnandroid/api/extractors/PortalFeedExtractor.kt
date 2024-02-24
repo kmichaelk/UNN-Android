@@ -26,7 +26,7 @@ class PortalFeedExtractor {
 
         val html = it.selectFirst(".feed-post-text")!!.html()
 
-        val attachmentUrl = it.selectFirst(".disk-ui-file-thumbnails-web-grid-img-item")?.attr("data-bx-src")
+        val attachmentUrl = it.selectFirst(".feed-post-cont-wrap .disk-ui-file-thumbnails-web-grid-img-item")?.attr("data-bx-src")
 
         val commentsCount = it.select(".feed-com-main-content").size +
                 (it.selectFirst(".feed-com-all-count")?.text()?.let { left -> Integer.parseInt(left) } ?: 0)
@@ -65,6 +65,8 @@ class PortalFeedExtractor {
             if (isEmpty()) null else this
         }
 
+        val attachmentUrl = it.selectFirst(".disk-ui-file-thumbnails-web-grid-img-item")?.attr("data-bx-src")
+
         PortalFeedComment(
             id = id,
             author = PortalFeedUser(
@@ -74,6 +76,7 @@ class PortalFeedExtractor {
             ),
             datetime = datetime,
             html = html,
+            attachmentUrl = attachmentUrl,
         )
     }
 
