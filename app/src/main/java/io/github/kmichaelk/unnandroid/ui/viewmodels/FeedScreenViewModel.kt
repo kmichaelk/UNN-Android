@@ -32,22 +32,22 @@ class FeedScreenViewModel @Inject constructor(
             lastPostIds = map { it.id }
         }
 
-    fun load() = viewModelScope.launch(Dispatchers.IO) {
+    fun load() = if (_uiState.value.data == null) viewModelScope.launch(Dispatchers.IO) {
         val page = 1
         lastPostIds = emptyList()
         _uiState.update { it.copy(error = null, page = page) }
         try {
             val feed = fetch(page)
             _uiState.update { it.copy(
-                data = feed,
+                data = feed
             ) }
         } catch (ex: Exception) {
             Timber.e(ex)
             _uiState.update { it.copy(
-                error = UiError.from(ex),
+                error = UiError.from(ex)
             ) }
         }
-    }
+    } else null
 
     fun loadMore() {
         assert(_uiState.value.data != null)

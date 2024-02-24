@@ -79,7 +79,7 @@ fun FeedScreen(
 
     if (pullToRefreshState.isRefreshing) {
         LaunchedEffect(true) {
-            viewModel.load().join()
+            viewModel.load()?.join()
             pullToRefreshState.endRefresh()
         }
     }
