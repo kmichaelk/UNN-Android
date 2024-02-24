@@ -127,7 +127,6 @@ fun SectionsListScreen(
 
     BackHandler {
         navController.popBackStack()
-        navController.navigate(AppScreen.Sections.name)
     }
 
     LaunchedEffect(Unit) {
@@ -154,7 +153,6 @@ fun SectionsListScreen(
                 navigationIcon = {
                     IconButton(onClick = {
                         navController.popBackStackLifecycleAware()
-                        navController.navigate(AppScreen.Sections.name)
                     }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Назад")
                     }
