@@ -34,7 +34,10 @@ class ScheduleSearchViewModel @Inject constructor(
     private val emptySearchResults = emptyList<ScheduleEntity>()
     val searchResults = searchQuery
         .debounce(300L)
-        .onEach { _isSearching.update { true } }
+        .onEach {
+            _isSearching.update { true }
+            _error.update { null }
+        }
         .map { query ->
             if (query.isNotBlank())
                 viewModelScope.async(Dispatchers.IO) {
