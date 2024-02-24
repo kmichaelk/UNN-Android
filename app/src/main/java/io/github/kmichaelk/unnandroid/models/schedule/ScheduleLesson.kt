@@ -8,7 +8,7 @@ data class ScheduleLesson(
     val discipline: String,
 
     @SerializedName("kindOfWork")
-    val kind: String,
+    val kind: String?,
 
     @SerializedName("kindOfWorkOid")
     val kindId: Int,
@@ -35,7 +35,7 @@ data class ScheduleLesson(
     val building: String,
 
     @SerializedName("stream")
-    var stream: String? = null,
+    val stream: String?,
 
     @SerializedName("date")
     val date: Date

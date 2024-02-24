@@ -59,16 +59,11 @@ class ScheduleScreenViewModel @Inject constructor(
                 val schedule = scheduleClient.loadSchedule(entity, _uiState.value.range) {
                     if (it.lecturer != null) {
                         it.lecturer = it.lecturer!!.replace("!", "")
-                    } else {
-                        it.lecturer = "Вакансия"
                     }
                     if (it.lecturerRank != null) {
                         it.lecturerRank = it.lecturerRank!!
                             .replace("!", "")
                             .lowercase()
-                    }
-                    if (it.stream == null) {
-                        it.stream = "Группа по умолчанию"
                     }
                     it
                 }
