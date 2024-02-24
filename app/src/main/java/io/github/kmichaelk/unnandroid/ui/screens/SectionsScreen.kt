@@ -126,7 +126,6 @@ fun SectionsScreen(
                     OutlinedButton(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            navController.popBackStackLifecycleAware()
                             navController.navigate(AppScreen.SectionsTimetable.name)
                         }
                     ) {
