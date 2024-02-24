@@ -406,7 +406,8 @@ fun ScheduleScreen(
                             entity = entity,
                             onClick = {
                                 if (state.entity != entity) {
-                                    viewModel.load(entity)
+                                    viewModel.setEntity(entity)
+                                    pullToRefreshState.startRefresh()
                                     showBottomSheet = false
                                 }
                             },

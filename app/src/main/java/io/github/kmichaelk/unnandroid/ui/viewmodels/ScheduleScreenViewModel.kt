@@ -91,6 +91,11 @@ class ScheduleScreenViewModel @Inject constructor(
             load(_uiState.value.entity!!)
         } else { null }
 
+    fun setEntity(entity: ScheduleEntity) = _uiState.update { it.copy(
+        entity = entity,
+        schedule = null,
+    ) }
+
     fun setRange(range: ScheduleDateRange) : Boolean {
         if (_uiState.value.range == range) {
             return false
