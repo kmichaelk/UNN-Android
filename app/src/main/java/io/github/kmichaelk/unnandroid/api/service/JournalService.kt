@@ -1,8 +1,8 @@
 package io.github.kmichaelk.unnandroid.api.service
 
 import io.github.kmichaelk.unnandroid.models.journal.JournalSectionFilterConstraints
-import io.github.kmichaelk.unnandroid.models.journal.JournalSectionSemesterStat
 import io.github.kmichaelk.unnandroid.models.journal.JournalSectionInfo
+import io.github.kmichaelk.unnandroid.models.journal.JournalSectionSemesterStat
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

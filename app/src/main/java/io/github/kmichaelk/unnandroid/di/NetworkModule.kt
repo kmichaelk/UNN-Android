@@ -1,7 +1,6 @@
 package io.github.kmichaelk.unnandroid.di
 
 import android.content.Context
-import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,8 +10,6 @@ import io.github.kmichaelk.unnandroid.network.NetworkConnectionInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Named

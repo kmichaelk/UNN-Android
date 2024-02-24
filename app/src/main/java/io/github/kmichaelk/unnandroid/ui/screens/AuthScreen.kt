@@ -1,7 +1,6 @@
 package io.github.kmichaelk.unnandroid.ui.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,9 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredWidthIn
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -47,8 +44,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.kmichaelk.unnandroid.R
-import io.github.kmichaelk.unnandroid.ui.extensions.autofill
 import io.github.kmichaelk.unnandroid.ui.composables.OutlinedPasswordField
+import io.github.kmichaelk.unnandroid.ui.extensions.autofill
 import io.github.kmichaelk.unnandroid.ui.viewmodels.AuthScreenViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)

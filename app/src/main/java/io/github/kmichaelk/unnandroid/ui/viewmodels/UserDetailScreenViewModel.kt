@@ -3,9 +3,7 @@ package io.github.kmichaelk.unnandroid.ui.viewmodels
 import coil.ImageLoader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kmichaelk.unnandroid.api.PortalClient
-import io.github.kmichaelk.unnandroid.api.auth.PortalAuthInterceptor
 import io.github.kmichaelk.unnandroid.models.portal.PortalUser
-import io.github.kmichaelk.unnandroid.network.HostScopedInterceptor
 import javax.inject.Inject
 
 @HiltViewModel

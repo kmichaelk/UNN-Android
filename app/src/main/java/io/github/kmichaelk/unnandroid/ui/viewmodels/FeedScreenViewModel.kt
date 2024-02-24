@@ -1,13 +1,9 @@
 package io.github.kmichaelk.unnandroid.ui.viewmodels
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil.ImageLoader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kmichaelk.unnandroid.api.PortalClient
-import io.github.kmichaelk.unnandroid.api.auth.PortalAuthInterceptor
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
-import io.github.kmichaelk.unnandroid.network.HostScopedInterceptor
 import io.github.kmichaelk.unnandroid.ui.state.FeedScreenState
 import io.github.kmichaelk.unnandroid.ui.state.UiError
 import kotlinx.coroutines.Dispatchers

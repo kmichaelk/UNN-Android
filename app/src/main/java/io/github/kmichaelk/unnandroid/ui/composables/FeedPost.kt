@@ -34,7 +34,6 @@ import coil.compose.AsyncImage
 import io.github.kmichaelk.unnandroid.api.service.PortalService
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
-import io.github.kmichaelk.unnandroid.ui.AppScreen
 import io.github.kmichaelk.unnandroid.ui.LocalNavController
 
 @Composable

@@ -2,7 +2,6 @@ package io.github.kmichaelk.unnandroid.ui.state
 
 import io.github.kmichaelk.unnandroid.exceptions.NoInternetException
 import java.io.IOException
-import kotlin.Exception
 
 data class UiError(
     val title: String,

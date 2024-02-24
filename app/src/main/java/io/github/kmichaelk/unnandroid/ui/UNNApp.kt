@@ -17,7 +17,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kmichaelk.unnandroid.managers.AuthManager
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
 import io.github.kmichaelk.unnandroid.ui.screens.AboutScreen
-import io.github.kmichaelk.unnandroid.ui.screens.StudentsSearchScreen
 import io.github.kmichaelk.unnandroid.ui.screens.AuthScreen
 import io.github.kmichaelk.unnandroid.ui.screens.EmployeeSearchScreen
 import io.github.kmichaelk.unnandroid.ui.screens.FeedScreen
@@ -29,6 +28,7 @@ import io.github.kmichaelk.unnandroid.ui.screens.ScheduleScreen
 import io.github.kmichaelk.unnandroid.ui.screens.ScholarshipsScreen
 import io.github.kmichaelk.unnandroid.ui.screens.SectionsListScreen
 import io.github.kmichaelk.unnandroid.ui.screens.SectionsScreen
+import io.github.kmichaelk.unnandroid.ui.screens.StudentsSearchScreen
 import io.github.kmichaelk.unnandroid.ui.screens.UserDetailScreen
 import io.github.kmichaelk.unnandroid.ui.screens.WebinarsScreen
 import javax.inject.Inject

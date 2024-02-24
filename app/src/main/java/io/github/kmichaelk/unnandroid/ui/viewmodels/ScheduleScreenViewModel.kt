@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kmichaelk.unnandroid.api.ScheduleClient
-import io.github.kmichaelk.unnandroid.models.schedule.Schedule
 import io.github.kmichaelk.unnandroid.models.schedule.ScheduleDateRange
 import io.github.kmichaelk.unnandroid.models.schedule.ScheduleEntity
 import io.github.kmichaelk.unnandroid.ui.state.ScheduleScreenState

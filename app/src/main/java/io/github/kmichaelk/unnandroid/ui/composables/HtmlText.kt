@@ -19,7 +19,6 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
-import androidx.annotation.ColorRes
 import androidx.annotation.StyleRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

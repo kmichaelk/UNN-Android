@@ -1,7 +1,6 @@
 package io.github.kmichaelk.unnandroid.ui.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,23 +19,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.kmichaelk.unnandroid.BuildConfig
-import io.github.kmichaelk.unnandroid.ui.composables.AppDrawer
-import io.github.kmichaelk.unnandroid.ui.composables.FancyError
-import io.github.kmichaelk.unnandroid.ui.composables.FancyLoading
 import io.github.kmichaelk.unnandroid.R
+import io.github.kmichaelk.unnandroid.ui.composables.AppDrawer
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

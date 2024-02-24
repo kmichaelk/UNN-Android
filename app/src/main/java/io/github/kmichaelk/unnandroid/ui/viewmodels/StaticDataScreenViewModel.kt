@@ -2,7 +2,6 @@ package io.github.kmichaelk.unnandroid.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kmichaelk.unnandroid.ui.state.StaticDataScreenState
 import io.github.kmichaelk.unnandroid.ui.state.UiError
 import kotlinx.coroutines.Dispatchers

@@ -8,9 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AssignmentReturned
 import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.Numbers
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,7 +25,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.kmichaelk.unnandroid.ui.composables.FancyEmpty
 import io.github.kmichaelk.unnandroid.ui.viewmodels.OrdersScreenViewModel
-import io.github.kmichaelk.unnandroid.ui.viewmodels.ScholarshipsScreenViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
