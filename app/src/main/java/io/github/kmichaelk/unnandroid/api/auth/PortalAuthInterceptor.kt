@@ -4,12 +4,14 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.gson.Gson
 import io.github.kmichaelk.unnandroid.api.service.PortalService
-import io.github.kmichaelk.unnandroid.models.portal.PortalAccessDenial
+import io.github.kmichaelk.unnandroid.models.portal.PortalResponseWrapper
 import io.github.kmichaelk.unnandroid.utils.extractCookieValue
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
+import okhttp3.ResponseBody
+import retrofit2.HttpException
 import retrofit2.Invocation
 
 class PortalAuthInterceptor(
@@ -31,12 +33,9 @@ class PortalAuthInterceptor(
                 return false
             }
 
-            for (header in setCookieHeaders) {
-                if (header.startsWith("PHPSESSID=")) {
-                    prefs.edit {
-                        putString(PREF_PHPSESSID, extractCookieValue(header))
-                    }
-                    break
+            extractCookieValue(setCookieHeaders, "PHPSESSID")?.let {
+                prefs.edit {
+                    putString(PREF_PHPSESSID, it)
                 }
             }
 
@@ -46,20 +45,26 @@ class PortalAuthInterceptor(
             checkAuthResponse(response.headers().values("Set-Cookie"), prefs)
     }
 
+    init {
+        prefs.edit {
+            putString(PREF_PHPSESSID, "nolongervalid")
+            putString(PREF_RESTSESSID, "nolongervalid")
+        }
+    }
+
     private val gson = Gson()
 
     override fun intercept(chain: Interceptor.Chain): Response {
         var response = chain.proceed(injectAuthData(chain.request()))
 
-        if (response.code == 401 || "Authorize" == response.header("X-Bitrix-Ajax-Status", null)) {
-            if ("application/json; charset=utf-8" == response.header("Content-Type", null)) {
-                val denial = gson.fromJson(response.body!!.string(), PortalAccessDenial::class.java)
-                prefs.edit {
-                    putString(PREF_RESTSESSID, denial.sessionId)
-                }
+        val bxNewCsrf = response.header("X-Bitrix-New-Csrf") != null
+        if (response.code == 401 || bxNewCsrf || "Authorize" == response.header("X-Bitrix-Ajax-Status", null)) {
+            if (!bxNewCsrf && "application/json; charset=utf-8" == response.header("Content-Type", null)) {
+                response.body?.let { saveRestSessionId(it) }
                 response.close()
             } else {
                 response.close() // ASAP
+                //
                 val credentials = authDataHolder.getCredentials()
                 runBlocking {
                     val authResponse = service.login(
@@ -69,6 +74,17 @@ class PortalAuthInterceptor(
                     )
                     if (!checkAuthResponse(authResponse, prefs)) {
                         authDataHolder.logout()
+                    } else if (bxNewCsrf) {
+                        try {
+                            service.verifySessionId(
+                                cookie = "PHPSESSID=${prefs.getString(PREF_PHPSESSID, "")!!}",
+                                sessionId = prefs.getString(PREF_RESTSESSID, "")!!
+                            )
+                        } catch (ex: HttpException) {
+                            if (ex.code() == 401) {
+                                ex.response()?.errorBody()?.let { saveRestSessionId(it) }
+                            }
+                        }
                     }
                 }
             }
@@ -102,5 +118,13 @@ class PortalAuthInterceptor(
         builder.header("Cookie", "PHPSESSID=" + prefs.getString(PREF_PHPSESSID, "")!!)
 
         return builder.build()
+    }
+
+    private fun saveRestSessionId(body: ResponseBody) {
+        gson.fromJson(body.string(), PortalResponseWrapper::class.java).sessionId?.let {
+            prefs.edit {
+                putString(PREF_RESTSESSID, it)
+            }
+        }
     }
 }

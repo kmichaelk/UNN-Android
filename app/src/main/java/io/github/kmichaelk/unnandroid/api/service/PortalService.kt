@@ -20,8 +20,10 @@ import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface PortalService {
 
@@ -32,6 +34,13 @@ interface PortalService {
 
         const val P_URL = "https://portal.unn.ru"
     }
+
+    // @InjectSessionIdQueryParam //
+    @GET("rest/server.time.json")
+    suspend fun verifySessionId(
+        @Header("Cookie") cookie: String,
+        @Query("sessid") sessionId: String,
+    ): PortalResponseWrapper<*>
 
     @POST("auth/?login=yes")
     @FormUrlEncoded

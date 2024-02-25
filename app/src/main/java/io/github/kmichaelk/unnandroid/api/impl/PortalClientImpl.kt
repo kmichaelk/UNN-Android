@@ -66,7 +66,7 @@ class PortalClientImpl @Inject constructor(
     override fun getOkHttpClient(): OkHttpClient = okHttpClient
 
     override suspend fun getCurrentUser(): PortalCurrentUser =
-        service.getCurrentUser().result
+        service.getCurrentUser().result!!
 
     override suspend fun getFeed(
         pageNumber: Int,
