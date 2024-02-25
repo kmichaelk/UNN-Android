@@ -33,7 +33,7 @@ fun ScheduleLesson.color() = when(kindId) {
     // Зачет
     268 -> Color(0xFFFF80C7)
     //
-    else -> null
+    else -> Color(0xFFECE7EC)
 }
 
 fun SourceSemester.Season.displayName() = when (this) {
