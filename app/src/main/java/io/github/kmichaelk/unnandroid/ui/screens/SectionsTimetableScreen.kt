@@ -308,8 +308,8 @@ fun SectionsListScreen(
                     pullToRefreshState.startRefresh()
                 })
             } else if (state.filterConstraints != null && state.data != null) {
-                val sections = viewModel.filteredSections()
-                if (sections.isEmpty()) {
+                val timetable = viewModel.applyFilters()
+                if (timetable.sections.isEmpty()) {
                     FancyEmpty("Секций в этот день нет")
                 }
                 LazyColumn(Modifier.fillMaxSize()) {
@@ -372,7 +372,7 @@ fun SectionsListScreen(
                             )
                         }
                     }
-                    sections.entries.forEach { (timespan, sections) ->
+                    timetable.sections.entries.forEach { (timespan, sections) ->
                         stickyHeader {
                             Row(
                                 modifier = Modifier
@@ -441,7 +441,7 @@ fun SectionsListScreen(
                                     )
                                     IconText(
                                         icon = Icons.Default.CalendarMonth,
-                                        text = dateFormat.format(state.data!!.date) + ", ${it.timespan}",
+                                        text = dateFormat.format(timetable.date) + ", ${it.timespan}",
                                         contentDescription = "Дата занятия"
                                     )
                                     if (it.status == JournalSection.Status.Booked) {
@@ -470,9 +470,9 @@ fun SectionsListScreen(
         }
     }
 
-    if (sectionDetailId != null) {
+    sectionDetailId?.let {
         SectionInfoBottomSheet(
-            sectionId = sectionDetailId!!,
+            sectionId = it,
             onResult = { msg ->
                 if (msg != null) {
                     coroutineScope.launch {
@@ -486,13 +486,13 @@ fun SectionsListScreen(
         )
     }
 
-    if (filterHolder != null) {
+    filterHolder?.let {
         SectionsTimetableFilterBottomSheet(
-            title = filterHolder!!.title,
-            items = filterHolder!!.items,
-            selectedItem = filterHolder!!.selectedItem,
-            onResult = filterHolder!!.onResult,
-            onCancel = filterHolder!!.onCancel,
+            title = it.title,
+            items = it.items,
+            selectedItem = it.selectedItem,
+            onResult = it.onResult,
+            onCancel = it.onCancel,
         )
     }
 }
@@ -516,7 +516,7 @@ private fun SectionsTimetableFilterChip(
         modifier = Modifier.fillMaxWidth(),
         selected = labelSelected != null,
         onClick = onClick,
-        label = { Text(if (labelSelected == null) label else labelSelected) },
+        label = { Text(labelSelected ?: label) },
         leadingIcon = { Icon(icon, contentDescription = null) },
         trailingIcon = {
             Icon(Icons.Default.ArrowDropDown, contentDescription = "Изменить")

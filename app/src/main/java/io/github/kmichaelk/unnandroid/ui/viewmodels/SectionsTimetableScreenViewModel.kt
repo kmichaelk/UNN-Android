@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kmichaelk.unnandroid.api.JournalClient
-import io.github.kmichaelk.unnandroid.models.journal.JournalSection
+import io.github.kmichaelk.unnandroid.models.journal.JournalSectionTimetable
 import io.github.kmichaelk.unnandroid.ui.state.SectionsTimetableScreenState
 import io.github.kmichaelk.unnandroid.ui.state.UiError
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.text.SimpleDateFormat
 import java.util.Date
 import javax.inject.Inject
 
@@ -59,18 +58,19 @@ class SectionsTimetableScreenViewModel @Inject constructor(
     fun updateFilters(updater: (SectionsTimetableScreenState.Filters) -> SectionsTimetableScreenState.Filters) =
         _uiState.update { it.copy(filters = updater(it.filters)) }
 
-    fun filteredSections(): Map<String, List<JournalSection>> {
-        assert(_uiState.value.data?.sections != null)
+    fun applyFilters(): JournalSectionTimetable {
+        assert(_uiState.value.data != null)
+        val data = _uiState.value.data!!
 
         val filters = _uiState.value.filters
-        if (filters.none()) return _uiState.value.data?.sections!!
+        if (filters.none()) return data
 
-        return _uiState.value.data?.sections!!.toMutableMap().mapValues { entry ->
+        return data.copy(sections = _uiState.value.data?.sections!!.toMutableMap().mapValues { entry ->
             entry.value.toMutableList().filter {
                 (filters.type == null || filters.type == it.type)
                         && (filters.trainer == null || filters.trainer == it.trainer)
                         && (filters.building == null || it.auditorium.contains(filters.building))
             }
-        }.filter { it.value.isNotEmpty() }
+        }.filter { it.value.isNotEmpty() })
     }
 }
