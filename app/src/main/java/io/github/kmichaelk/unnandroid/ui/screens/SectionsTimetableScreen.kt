@@ -441,7 +441,7 @@ fun SectionsListScreen(
                                     )
                                     IconText(
                                         icon = Icons.Default.CalendarMonth,
-                                        text = dateFormat.format(state.date) + ", ${it.timespan}",
+                                        text = dateFormat.format(state.data!!.date) + ", ${it.timespan}",
                                         contentDescription = "Дата занятия"
                                     )
                                     if (it.status == JournalSection.Status.Booked) {
