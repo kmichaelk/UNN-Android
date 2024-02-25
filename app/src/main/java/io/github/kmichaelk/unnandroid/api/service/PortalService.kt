@@ -30,7 +30,7 @@ interface PortalService {
     companion object {
         const val BASE_URL = "https://portal.unn.ru/"
 
-        const val DATE_FORMAT = "yyyy-MM-dd"
+        const val DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
         const val P_URL = "https://portal.unn.ru"
     }
