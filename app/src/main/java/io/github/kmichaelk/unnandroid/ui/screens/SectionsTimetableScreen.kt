@@ -84,7 +84,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.kmichaelk.unnandroid.models.journal.JournalSection
-import io.github.kmichaelk.unnandroid.ui.AppScreen
 import io.github.kmichaelk.unnandroid.ui.LocalNavController
 import io.github.kmichaelk.unnandroid.ui.composables.CutoutFloatingActionButton
 import io.github.kmichaelk.unnandroid.ui.composables.DismissibleSnackbar
@@ -95,6 +94,7 @@ import io.github.kmichaelk.unnandroid.ui.composables.IconText
 import io.github.kmichaelk.unnandroid.ui.composables.SectionInfoBottomSheet
 import io.github.kmichaelk.unnandroid.ui.extensions.popBackStackLifecycleAware
 import io.github.kmichaelk.unnandroid.ui.viewmodels.SectionsTimetableScreenViewModel
+import io.github.kmichaelk.unnandroid.utils.debounced
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -138,6 +138,10 @@ fun SectionsListScreen(
             viewModel.load().join()
             pullToRefreshState.endRefresh()
         }
+    }
+
+    val refreshDebounced = debounced(800L) {
+        pullToRefreshState.startRefresh()
     }
 
     Scaffold(
@@ -197,9 +201,8 @@ fun SectionsListScreen(
                                     ) {
                                         IconButton(onClick = {
                                             datePickerOpen = false
-                                            if (viewModel.setDate(Date())) {
-                                                pullToRefreshState.startRefresh()
-                                            }
+                                            viewModel.setDate(Date())
+                                            pullToRefreshState.startRefresh()
                                         }) {
                                             Icon(
                                                 Icons.Default.Refresh,
@@ -231,9 +234,8 @@ fun SectionsListScreen(
                                         add(Calendar.DATE, -1)
                                         time
                                     }
-                                    if (viewModel.setDate(date)) {
-                                        pullToRefreshState.startRefresh()
-                                    }
+                                    viewModel.setDate(date)
+                                    refreshDebounced()
                                 },
                                 modifier = Modifier.padding(start = 2.dp)
                             ) {
@@ -254,9 +256,8 @@ fun SectionsListScreen(
                                         add(Calendar.DATE, 1)
                                         time
                                     }
-                                    if (viewModel.setDate(date)) {
-                                        pullToRefreshState.startRefresh()
-                                    }
+                                    viewModel.setDate(date)
+                                    refreshDebounced()
                                 },
                                 modifier = Modifier.padding(start = 2.dp)
                             ) {
@@ -278,9 +279,8 @@ fun SectionsListScreen(
                         CutoutFloatingActionButton(
                             onClick = {
                                 datePickerOpen = false
-                                if (viewModel.setDate(Date(datePickerState.selectedDateMillis!!))) {
-                                    pullToRefreshState.startRefresh()
-                                }
+                                viewModel.setDate(Date(datePickerState.selectedDateMillis!!))
+                                pullToRefreshState.startRefresh()
                             }
                         ) {
                             Icon(Icons.Default.Check, contentDescription = "Применить")

@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.text.SimpleDateFormat
 import java.util.Date
 import javax.inject.Inject
 
@@ -28,17 +29,18 @@ class SectionsTimetableScreenViewModel @Inject constructor(
     private var job: Job? = null
 
     fun load(): Job {
+        val date = _uiState.value.date
         _uiState.update { it.copy(error = null) }
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             try {
                 if (_uiState.value.filterConstraints == null) {
-                    val constraints = journalClient.getSectionsFilterConstraints(_uiState.value.date)
+                    val constraints = journalClient.getSectionsFilterConstraints(date)
                     _uiState.update { it.copy(
                         filterConstraints = constraints
                     ) }
                 }
-                val timetable = journalClient.getSectionsTimetable(_uiState.value.date)
+                val timetable = journalClient.getSectionsTimetable(date)
                 _uiState.update { it.copy(
                     data = timetable
                 ) }
@@ -50,12 +52,8 @@ class SectionsTimetableScreenViewModel @Inject constructor(
         return job!!
     }
 
-    fun setDate(date: Date): Boolean {
-        if (_uiState.value.date == date) {
-            return false
-        }
+    fun setDate(date: Date) {
         _uiState.update { it.copy(date = date) }
-        return true
     }
 
     fun updateFilters(updater: (SectionsTimetableScreenState.Filters) -> SectionsTimetableScreenState.Filters) =
