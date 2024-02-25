@@ -25,9 +25,12 @@ class SectionsTimetableScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SectionsTimetableScreenState())
     val uiState = _uiState.asStateFlow()
 
+    private var job: Job? = null
+
     fun load(): Job {
         _uiState.update { it.copy(error = null) }
-        return viewModelScope.launch(Dispatchers.IO) {
+        job?.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
             try {
                 if (_uiState.value.filterConstraints == null) {
                     val constraints = journalClient.getSectionsFilterConstraints(_uiState.value.date)
@@ -44,6 +47,7 @@ class SectionsTimetableScreenViewModel @Inject constructor(
                 _uiState.update { it.copy(error = UiError.from(ex)) }
             }
         }
+        return job!!
     }
 
     fun setDate(date: Date): Boolean {
