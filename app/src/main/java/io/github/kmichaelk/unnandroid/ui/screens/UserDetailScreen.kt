@@ -256,7 +256,7 @@ fun UserDetailScreen(
                         leadingContent = { Icon(Icons.Default.AccessTime, contentDescription = null) },
                         headlineContent = { Text("Последняя активность") },
                         supportingContent = { Text(it.lastActivity?.let { lastActivity ->
-                            dateFormat.format(lastActivity) } ?: "N/A")
+                            dateFormat.format(lastActivity) } ?: "Нет данных")
                         }
                     )
                 }

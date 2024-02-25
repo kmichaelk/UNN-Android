@@ -93,7 +93,7 @@ fun ScheduleLessonItem(
                 }
             )
             Text(
-                lesson.kind ?: "N/A",
+                lesson.kind ?: "Нет данных",
                 fontWeight = FontWeight.Light,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -111,7 +111,7 @@ fun ScheduleLessonItem(
             ScheduleLessonItemDetail(
                 icon = Icons.AutoMirrored.Filled.DirectionsWalk,
                 caption = "Поток",
-                text = lesson.stream ?: "N/A",
+                text = lesson.stream ?: "Нет данных",
                 snackBarHostState = snackBarHostState,
                 snackbarScope = snackbarScope
             )
@@ -119,7 +119,7 @@ fun ScheduleLessonItem(
                 icon = Icons.Default.Person,
                 caption = "Преподаватель",
                 text = (lesson.lecturer
-                    ?: "N/A") + (if (lesson.lecturerRank != null) " (${lesson.lecturerRank})" else ""),
+                    ?: "Нет данных") + (if (lesson.lecturerRank != null) " (${lesson.lecturerRank})" else ""),
                 snackBarHostState = snackBarHostState,
                 snackbarScope = snackbarScope
             )
