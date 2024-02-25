@@ -161,7 +161,8 @@ fun AuthScreen(
                 onClick = onFinish,
                 modifier = Modifier
                     .padding(top = 16.dp, end = 16.dp)
-                    .align(Alignment.TopEnd)
+                    .align(Alignment.TopEnd),
+                enabled = !state.isLoading && !state.finished
             ) {
                 Icon(Icons.Default.Close, contentDescription = "Закрыть")
             }
