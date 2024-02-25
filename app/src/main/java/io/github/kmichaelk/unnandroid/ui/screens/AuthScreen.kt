@@ -143,7 +143,7 @@ fun AuthScreen(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = viewModel::onSubmit,
-                    enabled = !state.isLoading
+                    enabled = !state.isLoading && !state.finished
                 ) {
                     Text("Войти")
                 }
