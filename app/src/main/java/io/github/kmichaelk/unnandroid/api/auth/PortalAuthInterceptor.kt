@@ -45,13 +45,6 @@ class PortalAuthInterceptor(
             checkAuthResponse(response.headers().values("Set-Cookie"), prefs)
     }
 
-    init {
-        prefs.edit {
-            putString(PREF_PHPSESSID, "nolongervalid")
-            putString(PREF_RESTSESSID, "nolongervalid")
-        }
-    }
-
     private val gson = Gson()
 
     override fun intercept(chain: Interceptor.Chain): Response {
