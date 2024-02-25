@@ -68,7 +68,9 @@ fun PostScreen(
     }
 
     LaunchedEffect(post) {
-        pullToRefreshState.startRefresh()
+        if (state.data == null) {
+            pullToRefreshState.startRefresh()
+        }
     }
 
     if (pullToRefreshState.isRefreshing) {

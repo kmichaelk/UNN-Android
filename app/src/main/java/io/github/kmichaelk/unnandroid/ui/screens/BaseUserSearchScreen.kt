@@ -61,7 +61,9 @@ fun <T> UserSearchScreen(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
     LaunchedEffect(Unit) {
-        viewModel.load()
+        if (results == null) {
+            viewModel.load()
+        }
     }
 
     AppDrawer(drawerState = drawerState) {

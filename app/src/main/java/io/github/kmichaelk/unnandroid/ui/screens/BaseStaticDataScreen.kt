@@ -48,7 +48,9 @@ fun <T> StaticDataScreen(
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        pullToRefreshState.startRefresh()
+        if (state.data == null) {
+            pullToRefreshState.startRefresh()
+        }
     }
 
     if (pullToRefreshState.isRefreshing) {
