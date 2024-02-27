@@ -24,9 +24,12 @@ class PortalFeedExtractor {
 
         val url = it.selectFirst(".feed-post-time-wrap > a")!!.attr("href")
 
-        val html = it.selectFirst(".feed-post-text")!!.html()
+        val contentRoot = it.selectFirst(".feed-post-text")!!
+        contentRoot.getElementsByTag("script").forEach { script -> contentRoot.children().remove(script) }
+        val html = contentRoot.html()
 
-        val attachmentUrl = it.selectFirst(".feed-post-cont-wrap .disk-ui-file-thumbnails-web-grid-img-item")?.attr("data-bx-src")
+        val attachmentUrl = it.selectFirst(".feed-post-cont-wrap .disk-ui-file-thumbnails-web-grid-img-item")
+            ?.attr("data-bx-src") ?: it.selectFirst(".feed-com-img-load > img")?.attr("data-thumb-src")
 
         val commentsCount = it.select(".feed-com-main-content").size +
                 (it.selectFirst(".feed-com-all-count")?.text()?.let { left -> Integer.parseInt(left) } ?: 0)
