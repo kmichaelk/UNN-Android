@@ -37,6 +37,14 @@ class PortalFeedExtractor {
 
         val entityXmlId = it.selectFirst(".feed-comments-block")!!.attr("data-bx-comments-entity-xml-id")
 
+        val receivers = it.select(".feed-add-post-destination-new").map { dst ->
+            PortalFeedPost.Receiver(
+                id = Integer.parseInt(dst.attr("data-bx-entity-id")),
+                name = dst.text(),
+                type = dst.attr("data-bx-entity-type")
+            )
+        }
+
         PortalFeedPost(
             id = id,
             author = PortalFeedUser(
@@ -51,6 +59,7 @@ class PortalFeedExtractor {
             views = views,
             url = url,
             entityXmlId = entityXmlId,
+            receivers = receivers,
         )
     }
 

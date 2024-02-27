@@ -23,6 +23,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -62,6 +63,7 @@ fun FeedScreen(
     val navController = LocalNavController.current
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val pullToRefreshState = rememberPullToRefreshState()
+    val postsBottomSheetState = rememberModalBottomSheetState()
 
     val uriHandler = LocalUriHandler.current
 
@@ -81,7 +83,7 @@ fun FeedScreen(
 
     if (pullToRefreshState.isRefreshing) {
         LaunchedEffect(true) {
-            viewModel.load()?.join()
+            viewModel.load().join()
             pullToRefreshState.endRefresh()
         }
     }
@@ -139,7 +141,8 @@ fun FeedScreen(
                                             args = bundleOf("post" to it)
                                         )
                                     },
-                                    onUserOpen = onUserOpen
+                                    onUserOpen = onUserOpen,
+                                    bottomSheetState = postsBottomSheetState,
                                 )
                             }
                             item {

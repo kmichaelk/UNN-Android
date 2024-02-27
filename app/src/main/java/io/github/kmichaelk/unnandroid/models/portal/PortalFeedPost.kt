@@ -13,7 +13,9 @@ data class PortalFeedPost(
     val entityXmlId: String,
     val views: Int,
     val url: String,
+    val receivers: List<Receiver>,
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readParcelable(PortalFeedUser::class.java.classLoader)!!,
@@ -23,8 +25,41 @@ data class PortalFeedPost(
         parcel.readInt(),
         parcel.readString()!!,
         parcel.readInt(),
-        parcel.readString()!!
+        parcel.readString()!!,
+        parcel.createTypedArrayList(Receiver)!!
     ) {
+    }
+
+    data class Receiver(
+        val id: Int,
+        val name: String,
+        val type: String,
+    ) : Parcelable {
+        constructor(parcel: Parcel) : this(
+            parcel.readInt(),
+            parcel.readString()!!,
+            parcel.readString()!!
+        )
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeInt(id)
+            parcel.writeString(name)
+            parcel.writeString(type)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<Receiver> {
+            override fun createFromParcel(parcel: Parcel): Receiver {
+                return Receiver(parcel)
+            }
+
+            override fun newArray(size: Int): Array<Receiver?> {
+                return arrayOfNulls(size)
+            }
+        }
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -37,6 +72,7 @@ data class PortalFeedPost(
         parcel.writeString(entityXmlId)
         parcel.writeInt(views)
         parcel.writeString(url)
+        parcel.writeTypedList(receivers)
     }
 
     override fun describeContents(): Int {
@@ -52,5 +88,4 @@ data class PortalFeedPost(
             return arrayOfNulls(size)
         }
     }
-
 }
