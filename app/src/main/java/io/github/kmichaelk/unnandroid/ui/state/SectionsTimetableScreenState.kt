@@ -7,7 +7,7 @@ import java.util.Date
 
 data class SectionsTimetableScreenState(
     val date: Date = Calendar.getInstance().run {
-        add(Calendar.DATE, 1)
+        add(Calendar.DATE, 2)
         time
     },
 
