@@ -158,7 +158,7 @@ fun <T> UserSearchScreen(
                                 ) {
                                     if (state.error != null) {
                                         Button(onClick = { viewModel.loadMore() }) {
-                                            Text("Ошибка, повторить")
+                                            Text("Загрузить еще")
                                         }
                                     } else {
                                         CircularProgressIndicator()
