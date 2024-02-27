@@ -36,6 +36,7 @@ import kotlinx.coroutines.launch
 fun <T> StaticDataScreen(
     viewModel: StaticDataScreenViewModel<T>,
     title: @Composable (() -> Unit),
+    alwaysRefresh: Boolean = false,
     bottomBar: @Composable () -> Unit = {},
     snackbarHost: @Composable () -> Unit = {},
     pullToRefreshState: PullToRefreshState = rememberPullToRefreshState(),
@@ -48,7 +49,7 @@ fun <T> StaticDataScreen(
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        if (state.data == null) {
+        if (alwaysRefresh || state.data == null) {
             pullToRefreshState.startRefresh()
         }
     }

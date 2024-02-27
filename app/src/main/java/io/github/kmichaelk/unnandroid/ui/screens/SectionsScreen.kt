@@ -81,6 +81,7 @@ fun SectionsScreen(
 
     StaticDataScreen(
         viewModel = viewModel,
+        alwaysRefresh = true,
         bottomBar = {
             BottomAppBar {
                 if (state.semester != null) {
