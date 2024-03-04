@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -133,17 +134,19 @@ fun FeedScreen(
                     CompositionLocalProvider(LocalImageLoader provides viewModel.imageLoader) {
                         LazyColumn {
                             items(posts, key = { it.id }) {
-                                FeedPost(
-                                    post = it,
-                                    onOpenComments = {
-                                        navController.navigate(
-                                            route = AppScreen.FeedPost.name,
-                                            args = bundleOf("post" to it)
-                                        )
-                                    },
-                                    onUserOpen = onUserOpen,
-                                    bottomSheetState = postsBottomSheetState,
-                                )
+                                ElevatedCard(Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
+                                    FeedPost(
+                                        post = it,
+                                        onOpenComments = {
+                                            navController.navigate(
+                                                route = AppScreen.FeedPost.name,
+                                                args = bundleOf("post" to it)
+                                            )
+                                        },
+                                        onUserOpen = onUserOpen,
+                                        bottomSheetState = postsBottomSheetState,
+                                    )
+                                }
                             }
                             item {
                                 Box(
