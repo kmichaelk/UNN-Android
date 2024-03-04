@@ -234,6 +234,7 @@ fun SectionsListScreen(
                                         add(Calendar.DATE, -1)
                                         time
                                     }
+                                    datePickerState.selectedDateMillis = date.time
                                     viewModel.setDate(date)
                                     refreshDebounced()
                                 },
@@ -256,6 +257,7 @@ fun SectionsListScreen(
                                         add(Calendar.DATE, 1)
                                         time
                                     }
+                                    datePickerState.selectedDateMillis = date.time
                                     viewModel.setDate(date)
                                     refreshDebounced()
                                 },
