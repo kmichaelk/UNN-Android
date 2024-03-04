@@ -28,8 +28,16 @@ class PortalFeedExtractor {
         contentRoot.getElementsByTag("script").forEach { script -> contentRoot.children().remove(script) }
         val html = contentRoot.html()
 
-        val attachmentUrl = it.selectFirst(".feed-post-cont-wrap .disk-ui-file-thumbnails-web-grid-img-item")
-            ?.attr("data-bx-src") ?: it.selectFirst(".feed-com-img-load > img")?.attr("data-thumb-src")
+        val attachmentsUrls = mutableListOf<String>()
+        it.select(".feed-post-cont-wrap .disk-ui-file-thumbnails-web-grid-img-item").forEach { thumb ->
+            attachmentsUrls.add(thumb.attr("data-bx-src"))
+        }
+        it.select(".feed-com-img-load > img").forEach { thumb ->
+            attachmentsUrls.add(thumb.attr("data-thumb-src"))
+        }
+        it.select(".disk-ui-file-thumbnails-web-grid-img").forEach { thumb ->
+            attachmentsUrls.add(thumb.attr("data-bx-src"))
+        }
 
         val commentsCount = it.select(".feed-com-main-content").size +
                 (it.selectFirst(".feed-com-all-count")?.text()?.let { left -> Integer.parseInt(left) } ?: 0)
@@ -54,7 +62,7 @@ class PortalFeedExtractor {
             ),
             datetime = datetime,
             html = html,
-            attachmentUrl = attachmentUrl,
+            attachmentsUrls = attachmentsUrls,
             commentsCount = commentsCount,
             views = views,
             url = url,

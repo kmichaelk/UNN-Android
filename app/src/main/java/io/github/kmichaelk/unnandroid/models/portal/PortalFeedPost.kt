@@ -8,7 +8,7 @@ data class PortalFeedPost(
     val author: PortalFeedUser,
     val datetime: String,
     val html: String,
-    val attachmentUrl: String?,
+    val attachmentsUrls: List<String>,
     val commentsCount: Int,
     val entityXmlId: String,
     val views: Int,
@@ -21,7 +21,7 @@ data class PortalFeedPost(
         parcel.readParcelable(PortalFeedUser::class.java.classLoader)!!,
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.readString(),
+        parcel.createStringArrayList()!!,
         parcel.readInt(),
         parcel.readString()!!,
         parcel.readInt(),
@@ -67,7 +67,7 @@ data class PortalFeedPost(
         parcel.writeParcelable(author, flags)
         parcel.writeString(datetime)
         parcel.writeString(html)
-        parcel.writeString(attachmentUrl)
+        parcel.writeStringList(attachmentsUrls)
         parcel.writeInt(commentsCount)
         parcel.writeString(entityXmlId)
         parcel.writeInt(views)
