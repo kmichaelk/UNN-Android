@@ -26,6 +26,7 @@ fun IconText(
     text: String,
     contentDescription: String?,
     size: TextUnit = 16.sp,
+    lineHeight: TextUnit = TextUnit.Unspecified,
     maxLines: Int = 1,
     verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     fontWeight: FontWeight? = null,
@@ -47,6 +48,7 @@ fun IconText(
             text = text,
             fontSize = size,
             fontWeight = fontWeight,
+            lineHeight = lineHeight,
             maxLines = maxLines,
             overflow = TextOverflow.Ellipsis
         )

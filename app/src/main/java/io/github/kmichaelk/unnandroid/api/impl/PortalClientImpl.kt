@@ -64,6 +64,7 @@ class PortalClientImpl @Inject constructor(
     }
 
     override fun getOkHttpClient(): OkHttpClient = okHttpClient
+    override fun getSessionId(): String = authPrefs.getString("portal_phpsessid", "")!!
 
     override suspend fun getCurrentUser(): PortalCurrentUser =
         service.getCurrentUser().result!!

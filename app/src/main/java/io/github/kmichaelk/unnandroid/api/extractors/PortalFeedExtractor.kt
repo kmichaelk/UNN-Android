@@ -1,5 +1,6 @@
 package io.github.kmichaelk.unnandroid.api.extractors
 
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedAttachedFile
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedComment
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
@@ -53,6 +54,15 @@ class PortalFeedExtractor {
             )
         }
 
+        val files = it.select(".feed-com-file-name-wrap").map { file ->
+            val fileInfo = file.selectFirst(".feed-com-file-name")!!
+            PortalFeedAttachedFile(
+                title = fileInfo.attr("title"),
+                size = file.selectFirst(".feed-com-file-size")!!.text(),
+                url = fileInfo.attr("data-src")
+            )
+        }
+
         PortalFeedPost(
             id = id,
             author = PortalFeedUser(
@@ -68,6 +78,7 @@ class PortalFeedExtractor {
             url = url,
             entityXmlId = entityXmlId,
             receivers = receivers,
+            files = files,
         )
     }
 

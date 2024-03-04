@@ -36,4 +36,5 @@ interface PortalClient {
     suspend fun getRuzIdFromBitrixId(bitrixId: Int): Int
 
     fun getOkHttpClient(): OkHttpClient
+    fun getSessionId(): String // TODO: Refactor DownloadManager to use OkHttpClient
 }

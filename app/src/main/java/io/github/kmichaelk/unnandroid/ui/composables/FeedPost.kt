@@ -1,5 +1,10 @@
 package io.github.kmichaelk.unnandroid.ui.composables
 
+import android.app.DownloadManager
+import android.content.Context
+import android.net.Uri
+import android.os.Environment
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,7 +13,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,6 +27,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Comment
 import androidx.compose.material.icons.filled.Group
@@ -30,7 +35,6 @@ import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.RemoveRedEye
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -53,6 +57,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
@@ -63,10 +68,12 @@ import io.github.kmichaelk.unnandroid.api.service.PortalService
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
 
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun FeedPost(
     post: PortalFeedPost,
+    onDownload: (DownloadManager.Request) -> Unit,
     onUserOpen: (PortalFeedUser) -> Unit,
     onOpenComments: () -> Unit,
     bottomSheetState: SheetState = rememberModalBottomSheetState()
@@ -136,7 +143,8 @@ fun FeedPost(
                             model = PortalService.P_URL + post.attachmentsUrls[idx],
                             contentDescription = null,
                             contentScale = ContentScale.FillWidth,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
                                 .onSizeChanged { minHeight = minHeight.coerceAtLeast(it.height) },
                         )
                     }
@@ -161,6 +169,44 @@ fun FeedPost(
         }
 
         Spacer(Modifier.height(8.dp))
+
+        if (post.files.isNotEmpty()) {
+            val context = LocalContext.current
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 16.dp)) {
+                post.files.forEach { file ->
+                    IconText(
+                        icon = Icons.Default.AttachFile,
+                        text = "${file.title} (${file.size})",
+                        contentDescription = null,
+                        maxLines = 3,
+                        size = 14.sp,
+                        lineHeight = 14.sp,
+                        fontWeight = FontWeight.Light,
+                        modifier = Modifier
+                            .clip(MaterialTheme.shapes.small)
+                            .fillMaxWidth()
+                            .clickable {
+                                //uriHandler.openUri(PortalService.P_URL + file.url)
+                                val uri = Uri.parse(PortalService.P_URL + file.url)
+                                val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                                val request = DownloadManager.Request(uri).apply {
+                                    setTitle(file.title)
+                                    setDescription("Загрузка вложения (${file.size})")
+                                    setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                                    setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, file.title)
+                                }
+                                onDownload(request)
+                                Toast.makeText(context, "Загрузка файла начата", Toast.LENGTH_LONG).show()
+                                downloadManager.enqueue(request)
+                            }
+                            .padding(vertical = 4.dp)
+                    )
+                }
+            }
+        }
 
         Row(
             modifier = Modifier

@@ -120,7 +120,12 @@ fun PostScreen(
                     val comments = state.data!!
                     LazyColumn {
                         item {
-                            FeedPost(post = post, onUserOpen = onUserOpen, onOpenComments = {})
+                            FeedPost(
+                                post = post,
+                                onUserOpen = onUserOpen,
+                                onOpenComments = {},
+                                onDownload = viewModel::authorizeDownload
+                            )
                             Spacer(Modifier.height(8.dp))
                         }
                         items(comments, key = { it.id }) {

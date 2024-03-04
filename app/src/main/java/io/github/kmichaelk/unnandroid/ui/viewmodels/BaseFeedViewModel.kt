@@ -1,5 +1,6 @@
 package io.github.kmichaelk.unnandroid.ui.viewmodels
 
+import android.app.DownloadManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
@@ -49,5 +50,9 @@ abstract class BaseFeedViewModel(
                 callback(id)
             }
         }
+    }
+
+    fun authorizeDownload(request: DownloadManager.Request) {
+        request.addRequestHeader("Cookie", "PHPSESSID=${portalClient.getSessionId()}")
     }
 }

@@ -14,6 +14,7 @@ data class PortalFeedPost(
     val views: Int,
     val url: String,
     val receivers: List<Receiver>,
+    val files: List<PortalFeedAttachedFile>
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -26,7 +27,8 @@ data class PortalFeedPost(
         parcel.readString()!!,
         parcel.readInt(),
         parcel.readString()!!,
-        parcel.createTypedArrayList(Receiver)!!
+        parcel.createTypedArrayList(Receiver)!!,
+        parcel.createTypedArrayList(PortalFeedAttachedFile)!!
     ) {
     }
 
@@ -73,6 +75,7 @@ data class PortalFeedPost(
         parcel.writeInt(views)
         parcel.writeString(url)
         parcel.writeTypedList(receivers)
+        parcel.writeTypedList(files)
     }
 
     override fun describeContents(): Int {

@@ -145,6 +145,7 @@ fun FeedScreen(
                                         },
                                         onUserOpen = onUserOpen,
                                         bottomSheetState = postsBottomSheetState,
+                                        onDownload = viewModel::authorizeDownload,
                                     )
                                 }
                             }
