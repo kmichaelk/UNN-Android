@@ -106,7 +106,7 @@ fun UserDetailScreen(
                     Box(
                         Modifier
                             .parallax(0.5f)
-                            .height(360.dp)
+                            .height(400.dp)
                             .graphicsLayer {
                                 // change alpha of Image as the toolbar expands
                                 alpha = toolbarState.toolbarState.progress
