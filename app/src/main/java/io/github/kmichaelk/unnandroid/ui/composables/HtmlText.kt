@@ -35,6 +35,7 @@ import coil.Coil
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.size.Scale
+import io.github.kmichaelk.unnandroid.ui.html.ExtendedHtmlTagHandler
 
 
 // https://stackoverflow.com/questions/77704540/android-compose-how-to-display-html-text-with-image-tag-inside-text
@@ -44,7 +45,7 @@ fun HtmlText(
     html: String,
     modifier: Modifier = Modifier,
     imageSourceModifier: ((source: String) -> String)? = null,
-    htmlTagHandler: TagHandler? = null,
+    htmlTagHandler: TagHandler? = ExtendedHtmlTagHandler(),
     @StyleRes style: Int = android.R.style.TextAppearance_Material_Body1,
     typeface: Typeface? = null,
     onClicked: ((String) -> Unit)? = null
