@@ -126,7 +126,11 @@ fun SectionsListScreen(
     val navController = LocalNavController.current
 
     BackHandler {
-        navController.popBackStack()
+        if (datePickerOpen) {
+            datePickerOpen = false
+        } else {
+            navController.popBackStack()
+        }
     }
 
     LaunchedEffect(Unit) {
