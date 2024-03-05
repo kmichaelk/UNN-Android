@@ -89,10 +89,15 @@ fun ScheduleSearch(
                 )
         },
     ) {
+        println("isSearching = ${isSearching}, results = ${results}, query = ${query}")
         if (error != null) {
             FancyError(error!!)
-        } else if (!isSearching && results.isEmpty() && query.isNotBlank() && query == currentQuery) {
-            Text("Ничего не найдено", modifier = Modifier.padding(24.dp))
+        } else if (!isSearching && results.isEmpty() && query == currentQuery) {
+            Text(if (query.isBlank())
+                "Введите название группы, номер аудитории или имя преподавателя"
+                else "Ничего не найдено",
+                modifier = Modifier.padding(24.dp)
+            )
         }
         LazyColumn(
             Modifier
