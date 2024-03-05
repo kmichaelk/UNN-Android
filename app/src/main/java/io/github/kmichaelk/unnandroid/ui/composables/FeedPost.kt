@@ -191,15 +191,23 @@ fun FeedPost(
                             .clickable {
                                 //uriHandler.openUri(PortalService.P_URL + file.url)
                                 val uri = Uri.parse(PortalService.P_URL + file.url)
-                                val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                                val request = DownloadManager.Request(uri).apply {
-                                    setTitle(file.title)
-                                    setDescription("Загрузка вложения (${file.size})")
-                                    setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                                    setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, file.title)
-                                }
+                                val downloadManager =
+                                    context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                                val request = DownloadManager
+                                    .Request(uri)
+                                    .apply {
+                                        setTitle(file.title)
+                                        setDescription("Загрузка вложения (${file.size})")
+                                        setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                                        setDestinationInExternalPublicDir(
+                                            Environment.DIRECTORY_DOWNLOADS,
+                                            file.title
+                                        )
+                                    }
                                 onDownload(request)
-                                Toast.makeText(context, "Загрузка файла начата", Toast.LENGTH_LONG).show()
+                                Toast
+                                    .makeText(context, "Загрузка файла начата", Toast.LENGTH_LONG)
+                                    .show()
                                 downloadManager.enqueue(request)
                             }
                             .padding(vertical = 4.dp)
@@ -213,24 +221,29 @@ fun FeedPost(
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            TextButton(onClick = { receiversSheetOpen = true }) {
-                Icon(Icons.Default.People, contentDescription = "Получатели")
-                Spacer(Modifier.width(6.dp))
-                Text("${post.receivers.size}")
+            Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
+                TextButton(onClick = { receiversSheetOpen = true }) {
+                    Icon(Icons.Default.People, contentDescription = "Получатели")
+                    Spacer(Modifier.width(6.dp))
+                    Text("${post.receivers.size}")
+                }
             }
 
-            TextButton(onClick = onOpenComments) {
-                Icon(Icons.Default.Comment, contentDescription = "Комментарии")
-                Spacer(Modifier.width(6.dp))
-                Text("${post.commentsCount}")
+            Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                TextButton(onClick = onOpenComments) {
+                    Icon(Icons.Default.Comment, contentDescription = "Комментарии")
+                    Spacer(Modifier.width(6.dp))
+                    Text("${post.commentsCount}")
+                }
             }
 
-            TextButton(onClick = { }) {
-                Icon(Icons.Default.RemoveRedEye, contentDescription = "Просмотры")
-                Spacer(Modifier.width(6.dp))
-                Text(post.views.toString())
+            Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterEnd) {
+                TextButton(onClick = { }) {
+                    Icon(Icons.Default.RemoveRedEye, contentDescription = "Просмотры")
+                    Spacer(Modifier.width(6.dp))
+                    Text(post.views.toString())
+                }
             }
         }
     }
