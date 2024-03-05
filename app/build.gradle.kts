@@ -13,8 +13,8 @@ android {
         applicationId = "io.github.kmichaelk.unnandroid"
         minSdk = 24
         targetSdk = 34
-        versionCode = 13
-        versionName = "1.0.12"
+        versionCode = 14
+        versionName = "1.0.13"
 
         resourceConfigurations.clear()
         resourceConfigurations.add("ru")
