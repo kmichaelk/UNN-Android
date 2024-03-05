@@ -283,12 +283,13 @@ fun ScheduleScreen(
                         if (dateRangePickerOpen) {
                             CutoutFloatingActionButton(
                                 onClick = {
-                                    dateRangePickerOpen = false
-                                    viewModel.setRange(
-                                        Date(dateRangePickerState.selectedStartDateMillis!!),
-                                        Date(dateRangePickerState.selectedEndDateMillis!!)
-                                    )
-                                    pullToRefreshState.startRefresh()
+                                    val begin = dateRangePickerState.selectedStartDateMillis
+                                    val end = dateRangePickerState.selectedEndDateMillis
+                                    if (begin != null && end != null) {
+                                        dateRangePickerOpen = false
+                                        viewModel.setRange(Date(begin), Date(end))
+                                        pullToRefreshState.startRefresh()
+                                    }
                                 }
                             ) {
                                 Icon(Icons.Default.Check, contentDescription = "Применить")
