@@ -189,26 +189,33 @@ fun FeedPost(
                             .clip(MaterialTheme.shapes.small)
                             .fillMaxWidth()
                             .clickable {
-                                //uriHandler.openUri(PortalService.P_URL + file.url)
-                                val uri = Uri.parse(PortalService.P_URL + file.url)
-                                val downloadManager =
-                                    context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                                val request = DownloadManager
-                                    .Request(uri)
-                                    .apply {
-                                        setTitle(file.title)
-                                        setDescription("Загрузка вложения (${file.size})")
-                                        setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                                        setDestinationInExternalPublicDir(
-                                            Environment.DIRECTORY_DOWNLOADS,
-                                            file.title
+                                // uriHandler.openUri(PortalService.P_URL + file.url)
+                                // TODO: Android < 10 (Q) Support
+                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                                    val uri = Uri.parse(PortalService.P_URL + file.url)
+                                    val downloadManager =
+                                        context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                                    val request = DownloadManager
+                                        .Request(uri)
+                                        .apply {
+                                            setTitle(file.title)
+                                            setDescription("Загрузка вложения (${file.size})")
+                                            setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                                            setDestinationInExternalPublicDir(
+                                                Environment.DIRECTORY_DOWNLOADS,
+                                                file.title
+                                            )
+                                        }
+                                    onDownload(request)
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            "Загрузка файла начата",
+                                            Toast.LENGTH_LONG
                                         )
-                                    }
-                                onDownload(request)
-                                Toast
-                                    .makeText(context, "Загрузка файла начата", Toast.LENGTH_LONG)
-                                    .show()
-                                downloadManager.enqueue(request)
+                                        .show()
+                                    downloadManager.enqueue(request)
+                                }
                             }
                             .padding(vertical = 4.dp)
                     )
