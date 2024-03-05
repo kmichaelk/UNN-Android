@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="text">@android:color/white</color>
+    <color name="text">#e2e2e6</color>
 </resources>

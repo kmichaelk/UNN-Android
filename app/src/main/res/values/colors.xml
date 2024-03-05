@@ -2,5 +2,5 @@
 <resources>
     <color name="accent">#0061A2</color>
 
-    <color name="text">@android:color/black</color>
+    <color name="text">#1a1c1e</color>
 </resources>
