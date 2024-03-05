@@ -142,7 +142,7 @@ fun SectionInfoBottomSheet(
                 contentDescription = "Место проведения",
                 maxLines = 2,
                 verticalAlignment = Alignment.Top,
-                iconModifier = Modifier.padding(top = 2.dp),
+                iconModifier = Modifier.padding(top = 4.dp),
             )
             IconText(
                 icon = Icons.Default.CalendarMonth,
