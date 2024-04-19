@@ -41,7 +41,10 @@ class PortalFeedExtractor {
         }
 
         val commentsCount = it.select(".feed-com-main-content").size +
-                (it.selectFirst(".feed-com-all-count")?.text()?.let { left -> Integer.parseInt(left) } ?: 0)
+                (it.selectFirst(".feed-com-all")
+                    ?.attr("bx-mpl-comments-count")
+                    ?.let { v -> Integer.parseInt(v) }
+                    ?: 0)
         val views = Integer.parseInt(it.selectFirst(".feed-content-view-cnt")!!.text())
 
         val entityXmlId = it.selectFirst(".feed-comments-block")!!.attr("data-bx-comments-entity-xml-id")
