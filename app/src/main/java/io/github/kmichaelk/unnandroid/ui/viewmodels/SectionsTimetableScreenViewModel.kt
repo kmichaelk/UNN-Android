@@ -57,6 +57,7 @@ class SectionsTimetableScreenViewModel @Inject constructor(
                     ) }
                 }
                 val timetable = journalClient.getSectionsTimetable(date)
+                if (date != _uiState.value.date) return@launch
                 _uiState.update { it.copy(
                     data = timetable
                 ) }
