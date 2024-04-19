@@ -27,7 +27,7 @@ class JournalTimetableExtractor {
             TypeToken.getParameterized(List::class.java, JournalSectionInfoRaw::class.java).type
         )
 
-        val statuses = Jsoup.parse(stdRaw).body().select(".timetable-item > a").map {
+        val statuses = Jsoup.parse(stdRaw).body().select(".timetable-item > a").associate {
             val id = it.attr("onclick").run {
                 val matcher = patternOnClick.matcher(this)
                 if (!matcher.matches()) {
@@ -48,7 +48,7 @@ class JournalTimetableExtractor {
                 }
             }
             id to status
-        }.toMap()
+        }
 
         return listEx.map {
             val data = it.dataEx.split("<br>")

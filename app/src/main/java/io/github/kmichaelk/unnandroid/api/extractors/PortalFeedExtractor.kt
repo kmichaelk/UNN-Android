@@ -93,7 +93,7 @@ class PortalFeedExtractor {
         val authorUserId = Integer.parseInt(authorBlock.attr("bx-tooltip-user-id"))
         val authorName = authorBlock.text()
         val avatarUrl = it.selectFirst(".feed-com-avatar > img")!!.attr("src").run {
-            if (isEmpty()) null else this
+            ifEmpty { null }
         }
 
         val attachmentUrl = it.selectFirst(".disk-ui-file-thumbnails-web-grid-img-item")?.attr("data-bx-src")
