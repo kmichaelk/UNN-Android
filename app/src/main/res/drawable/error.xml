@@ -1,3 +1,20 @@
+<!--
+  ~ This file is part of UNN-Android.
+  ~
+  ~ UNN-Android is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ UNN-Android is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with UNN-Android.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <vector android:height="200dp" android:viewportHeight="168"
     android:viewportWidth="130" android:width="154dp" xmlns:android="http://schemas.android.com/apk/res/android">
     <path android:fillColor="#3caae9" android:pathData="M63,0.03C27.57,1.24 0,36 0,76.47v76.27c0,8.12 5.83,14.72 13,14.72s13,-6.6 13,-14.72c0,-2.7 1.94,-4.91 4.33,-4.91 2.39,0 4.33,2.2 4.33,4.91 0,8.12 5.83,14.72 13,14.72 3.47,0 6.74,-1.53 9.19,-4.31 2.46,-2.78 3.81,-6.48 3.81,-10.41 0,-2.71 1.94,-4.91 4.33,-4.91 2.39,0 4.33,2.2 4.33,4.91 0,8.12 5.83,14.72 13,14.72 7.17,0 13,-6.6 13,-14.72 0,-2.7 1.94,-4.91 4.33,-4.91 2.39,0 4.33,2.2 4.33,4.91 0,8.12 5.83,14.72 13,14.72s13,-6.6 13,-14.72V73.59c0,-41.03 -29.82,-74.82 -67,-73.56z"/>
