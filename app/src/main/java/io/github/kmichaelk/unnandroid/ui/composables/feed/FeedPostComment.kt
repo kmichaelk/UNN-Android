@@ -15,7 +15,7 @@
  * along with UNN-Android.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.kmichaelk.unnandroid.ui.composables
+package io.github.kmichaelk.unnandroid.ui.composables.feed
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -46,9 +46,11 @@ import io.github.kmichaelk.unnandroid.api.service.PortalService
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedComment
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
 import io.github.kmichaelk.unnandroid.ui.LocalNavController
+import io.github.kmichaelk.unnandroid.ui.composables.DummyAvatar
+import io.github.kmichaelk.unnandroid.ui.composables.HtmlText
 
 @Composable
-fun PostComment(
+fun FeedPostComment(
     comment: PortalFeedComment,
     onUserOpen: (PortalFeedUser) -> Unit
 ) {

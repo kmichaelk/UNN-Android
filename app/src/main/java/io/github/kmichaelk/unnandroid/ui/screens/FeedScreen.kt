@@ -65,7 +65,7 @@ import io.github.kmichaelk.unnandroid.ui.LocalNavController
 import io.github.kmichaelk.unnandroid.ui.composables.AppDrawer
 import io.github.kmichaelk.unnandroid.ui.composables.FancyError
 import io.github.kmichaelk.unnandroid.ui.composables.FancyLoading
-import io.github.kmichaelk.unnandroid.ui.composables.FeedPost
+import io.github.kmichaelk.unnandroid.ui.composables.feed.FeedPost
 import io.github.kmichaelk.unnandroid.ui.extensions.navigate
 import io.github.kmichaelk.unnandroid.ui.viewmodels.FeedScreenViewModel
 import kotlinx.coroutines.launch

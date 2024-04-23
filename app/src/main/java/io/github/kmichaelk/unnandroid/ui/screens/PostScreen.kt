@@ -58,8 +58,8 @@ import io.github.kmichaelk.unnandroid.ui.AppScreen
 import io.github.kmichaelk.unnandroid.ui.LocalNavController
 import io.github.kmichaelk.unnandroid.ui.composables.FancyError
 import io.github.kmichaelk.unnandroid.ui.composables.FancyLoading
-import io.github.kmichaelk.unnandroid.ui.composables.FeedPost
-import io.github.kmichaelk.unnandroid.ui.composables.PostComment
+import io.github.kmichaelk.unnandroid.ui.composables.feed.FeedPost
+import io.github.kmichaelk.unnandroid.ui.composables.feed.FeedPostComment
 import io.github.kmichaelk.unnandroid.ui.extensions.popBackStackLifecycleAware
 import io.github.kmichaelk.unnandroid.ui.viewmodels.PostScreenViewModel
 
@@ -146,7 +146,7 @@ fun PostScreen(
                             Spacer(Modifier.height(8.dp))
                         }
                         items(comments, key = { it.id }) {
-                            PostComment(
+                            FeedPostComment(
                                 comment = it,
                                 onUserOpen = onUserOpen,
                             )
