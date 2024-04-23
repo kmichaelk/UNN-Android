@@ -22,5 +22,6 @@ data class PortalFeedComment(
     val author: PortalFeedUser,
     val datetime: String,
     val html: String,
-    val attachmentUrl: String?,
+    val attachmentsUrls: List<String>,
+    val files: List<PortalFeedAttachedFile>
 )

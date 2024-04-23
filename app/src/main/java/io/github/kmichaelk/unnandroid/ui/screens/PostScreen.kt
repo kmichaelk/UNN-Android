@@ -149,6 +149,7 @@ fun PostScreen(
                             FeedPostComment(
                                 comment = it,
                                 onUserOpen = onUserOpen,
+                                onDownload = viewModel::authorizeDownload
                             )
                         }
                         item {

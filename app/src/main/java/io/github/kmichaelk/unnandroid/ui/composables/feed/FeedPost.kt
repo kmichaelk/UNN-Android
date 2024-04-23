@@ -137,19 +137,26 @@ fun FeedPost(
         }
 
         if (post.attachmentsUrls.isNotEmpty()) {
+            Spacer(Modifier.height(16.dp))
             ImageSlider(
                 imageUrls = post.attachmentsUrls.map { PortalService.P_URL + it },
             )
         }
 
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
 
         if (post.files.isNotEmpty()) {
-            post.files.forEach {
-                FeedAttachedFileLink(
-                    file = it,
-                    onDownload = onDownload,
-                )
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
+            ) {
+                post.files.forEach {
+                    FeedAttachedFileLink(
+                        file = it,
+                        onDownload = onDownload,
+                    )
+                }
             }
         }
 

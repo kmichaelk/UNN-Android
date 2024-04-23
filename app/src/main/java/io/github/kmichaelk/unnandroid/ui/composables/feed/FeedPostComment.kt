@@ -17,6 +17,7 @@
 
 package io.github.kmichaelk.unnandroid.ui.composables.feed
 
+import android.app.DownloadManager
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,13 +49,15 @@ import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
 import io.github.kmichaelk.unnandroid.ui.LocalNavController
 import io.github.kmichaelk.unnandroid.ui.composables.DummyAvatar
 import io.github.kmichaelk.unnandroid.ui.composables.HtmlText
+import io.github.kmichaelk.unnandroid.ui.composables.ImageSlider
+import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAttachedFileLink
 
 @Composable
 fun FeedPostComment(
     comment: PortalFeedComment,
-    onUserOpen: (PortalFeedUser) -> Unit
+    onUserOpen: (PortalFeedUser) -> Unit,
+    onDownload: (DownloadManager.Request) -> Unit,
 ) {
-    val navController = LocalNavController.current
     val uriHandler = LocalUriHandler.current
 
     OutlinedCard(
@@ -98,14 +101,29 @@ fun FeedPostComment(
                 })
             }
 
-            comment.attachmentUrl?.let {
+            if (comment.attachmentsUrls.isNotEmpty()) {
                 Spacer(Modifier.height(16.dp))
-                AsyncImage(
-                    model = PortalService.P_URL + it,
-                    contentDescription = null,
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier.fillMaxWidth()
+                comment.attachmentsUrls.forEach { println("cmnt: '${comment}'") }
+                ImageSlider(
+                    imageUrls = comment.attachmentsUrls.map { PortalService.P_URL + it },
                 )
+            }
+
+            Spacer(Modifier.height(4.dp))
+
+            if (comment.files.isNotEmpty()) {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 8.dp)
+                ) {
+                    comment.files.forEach {
+                        FeedAttachedFileLink(
+                            file = it,
+                            onDownload = onDownload,
+                        )
+                    }
+                }
             }
 
             Spacer(Modifier.height(16.dp))
