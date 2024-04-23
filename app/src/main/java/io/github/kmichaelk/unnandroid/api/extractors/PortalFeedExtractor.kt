@@ -32,28 +32,30 @@ class PortalFeedExtractor {
     fun extractPost(raw: String): List<PortalFeedPost> = Jsoup.parse(raw).select(".feed-post-block").map {
         val id = Integer.parseInt(it.attr("data-livefeed-id"))
 
-        val authorBlock = it.selectFirst(".feed-post-user-name")!!
+        val content = it.selectFirst(".feed-post-cont-wrap")!!
+
+        val authorBlock = content.selectFirst(".feed-post-user-name")!!
 
         val authorUserId = Integer.parseInt(authorBlock.attr("bx-post-author-id"))
         val authorName = authorBlock.text()
         val avatarUrl = extractPostAvatar(it.selectFirst(".feed-user-avatar i")!!)
 
-        val datetime = it.selectFirst(".feed-time")!!.text()
+        val datetime = content.selectFirst(".feed-time")!!.text()
 
-        val url = it.selectFirst(".feed-post-time-wrap > a")!!.attr("href")
+        val url = content.selectFirst(".feed-post-time-wrap > a")!!.attr("href")
 
-        val contentRoot = it.selectFirst(".feed-post-text")!!
+        val contentRoot = content.selectFirst(".feed-post-text")!!
         contentRoot.getElementsByTag("script").forEach { script -> contentRoot.children().remove(script) }
         val html = contentRoot.html()
 
         val attachmentsUrls = mutableListOf<String>()
-        it.select(".feed-post-cont-wrap .disk-ui-file-thumbnails-web-grid-img-item").forEach { thumb ->
+        content.select(".disk-ui-file-thumbnails-web-grid-img-item").forEach { thumb ->
             attachmentsUrls.add(thumb.attr("data-bx-src"))
         }
-        it.select(".feed-com-img-load > img").forEach { thumb ->
+        content.select(".feed-com-img-load > img").forEach { thumb ->
             attachmentsUrls.add(thumb.attr("data-thumb-src"))
         }
-        it.select(".disk-ui-file-thumbnails-web-grid-img").forEach { thumb ->
+        content.select(".disk-ui-file-thumbnails-web-grid-img").forEach { thumb ->
             attachmentsUrls.add(thumb.attr("data-bx-src"))
         }
 
@@ -74,7 +76,7 @@ class PortalFeedExtractor {
             )
         }
 
-        val files = it.select(".feed-com-file-name-wrap").map { file ->
+        val files = content.select(".feed-com-file-name-wrap").map { file ->
             val fileInfo = file.selectFirst(".feed-com-file-name")!!
             PortalFeedAttachedFile(
                 title = fileInfo.attr("title"),
