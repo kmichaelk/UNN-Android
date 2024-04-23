@@ -23,13 +23,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -37,20 +35,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import io.github.kmichaelk.unnandroid.api.service.PortalService
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedComment
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
-import io.github.kmichaelk.unnandroid.ui.LocalNavController
-import io.github.kmichaelk.unnandroid.ui.composables.DummyAvatar
 import io.github.kmichaelk.unnandroid.ui.composables.HtmlText
 import io.github.kmichaelk.unnandroid.ui.composables.ImageSlider
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAttachedFileLink
+import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAvatar
 
 @Composable
 fun FeedPostComment(
@@ -75,15 +70,7 @@ fun FeedPostComment(
                     .padding(12.dp),
             ) {
                 Box(Modifier.size(48.dp)) {
-                    comment.author.avatarUrl?.let {
-                        AsyncImage(
-                            model = PortalService.P_URL + it,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clip(CircleShape)
-                        )
-                    } ?: DummyAvatar(Modifier.fillMaxSize())
+                    FeedAvatar(url = comment.author.avatarUrl)
                 }
                 Spacer(Modifier.width(16.dp))
                 Column {
