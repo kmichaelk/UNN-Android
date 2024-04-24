@@ -104,9 +104,7 @@ fun FeedPost(
                 .padding(12.dp),
         ) {
             Box(Modifier.size(48.dp)) {
-                post.author.avatarUrl?.let {
-                    FeedAvatar(url = post.author.avatarUrl)
-                }
+                FeedAvatar(url = post.author.avatarUrl)
             }
             Spacer(Modifier.width(16.dp))
             Column {
