@@ -19,6 +19,7 @@ package io.github.kmichaelk.unnandroid.api.extractors
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.github.kmichaelk.unnandroid.exceptions.DataExtractionException
 import io.github.kmichaelk.unnandroid.models.journal.JournalSection
 import io.github.kmichaelk.unnandroid.models.journal.JournalSectionInfoRaw
 import org.jsoup.Jsoup
@@ -48,20 +49,20 @@ class JournalTimetableExtractor {
             val id = it.attr("onclick").run {
                 val matcher = patternOnClick.matcher(this)
                 if (!matcher.matches()) {
-                    throw RuntimeException("Malformed Journal Section - ID")
+                    throw DataExtractionException("Journal Section: ID")
                 }
                 Integer.parseInt(matcher.group(1)!!)
             }
             val status = it.attr("style").run {
                 val matcher = patternStyle.matcher(this)
                 if (!matcher.matches()) {
-                    throw RuntimeException("Malformed Journal Section - Status")
+                    throw DataExtractionException("Journal Section: status")
                 }
                 when (matcher.group(2)!!) {
                     "#B0E0E6" -> JournalSection.Status.Available
                     "#FFE4C4" -> JournalSection.Status.NotAvailable
                     "#e6f5d7" -> JournalSection.Status.Booked
-                    else -> throw RuntimeException("Malformed Journal Section - Unsupported Status")
+                    else -> throw DataExtractionException("Journal Section: unsupported Status")
                 }
             }
             id to status
