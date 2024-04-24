@@ -127,10 +127,10 @@ fun FeedPost(
             })
         }
 
-        if (post.attachmentsUrls.isNotEmpty()) {
+        if (post.attachments.isNotEmpty()) {
             Spacer(Modifier.height(16.dp))
             ImageSlider(
-                imageUrls = post.attachmentsUrls.map { PortalService.P_URL + it },
+                imageUrls = post.attachments.map { PortalService.P_URL + it },
             )
         }
 

@@ -20,6 +20,7 @@ package io.github.kmichaelk.unnandroid.api.extractors
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedAttachedFile
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedComment
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPostReceiver
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
@@ -43,7 +44,7 @@ class PortalFeedExtractor {
         val views = Integer.parseInt(it.selectFirst(".feed-content-view-cnt")!!.text())
 
         val receivers = it.select(".feed-add-post-destination-new").map { dst ->
-            PortalFeedPost.Receiver(
+            PortalFeedPostReceiver(
                 id = Integer.parseInt(dst.attr("data-bx-entity-id")),
                 name = dst.text(),
                 type = dst.attr("data-bx-entity-type")
@@ -99,7 +100,7 @@ class PortalFeedExtractor {
             ),
             datetime = datetime,
             html = html,
-            attachmentsUrls = attachmentsUrls,
+            attachments = attachmentsUrls,
             commentsCount = commentsCount,
             views = views,
             url = url,

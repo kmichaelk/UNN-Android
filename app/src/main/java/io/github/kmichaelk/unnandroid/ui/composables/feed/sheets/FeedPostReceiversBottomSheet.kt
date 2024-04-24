@@ -35,12 +35,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPostReceiver
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
 
 @Composable
 fun FeedPostReceiversBottomSheet(
-    receivers: List<PortalFeedPost.Receiver>,
+    receivers: List<PortalFeedPostReceiver>,
     onUserOpen: (PortalFeedUser) -> Unit,
 ) {
     Column {

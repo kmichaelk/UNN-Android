@@ -22,77 +22,48 @@ import android.os.Parcelable
 
 data class PortalFeedPost(
     val id: Int,
+    val entityXmlId: String,
     val author: PortalFeedUser,
     val datetime: String,
-    val html: String,
-    val attachmentsUrls: List<String>,
-    val commentsCount: Int,
-    val entityXmlId: String,
-    val views: Int,
-    val url: String,
-    val receivers: List<Receiver>,
-    val files: List<PortalFeedAttachedFile>
-) : Parcelable {
 
+    val html: String,
+
+    val attachments: List<String>,
+    val files: List<PortalFeedAttachedFile>,
+
+    val receivers: List<PortalFeedPostReceiver>,
+    val commentsCount: Int,
+    val views: Int,
+
+    val url: String,
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
+        parcel.readString()!!,
         parcel.readParcelable(PortalFeedUser::class.java.classLoader)!!,
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.createStringArrayList()!!,
+        parcel.createTypedArrayList(PortalFeedAttachedFile)!!,
+        parcel.createTypedArrayList(PortalFeedPostReceiver)!!,
         parcel.readInt(),
-        parcel.readString()!!,
         parcel.readInt(),
-        parcel.readString()!!,
-        parcel.createTypedArrayList(Receiver)!!,
-        parcel.createTypedArrayList(PortalFeedAttachedFile)!!
+        parcel.readString()!!
     ) {
-    }
-
-    data class Receiver(
-        val id: Int,
-        val name: String,
-        val type: String,
-    ) : Parcelable {
-        constructor(parcel: Parcel) : this(
-            parcel.readInt(),
-            parcel.readString()!!,
-            parcel.readString()!!
-        )
-
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-            parcel.writeInt(id)
-            parcel.writeString(name)
-            parcel.writeString(type)
-        }
-
-        override fun describeContents(): Int {
-            return 0
-        }
-
-        companion object CREATOR : Parcelable.Creator<Receiver> {
-            override fun createFromParcel(parcel: Parcel): Receiver {
-                return Receiver(parcel)
-            }
-
-            override fun newArray(size: Int): Array<Receiver?> {
-                return arrayOfNulls(size)
-            }
-        }
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
+        parcel.writeString(entityXmlId)
         parcel.writeParcelable(author, flags)
         parcel.writeString(datetime)
         parcel.writeString(html)
-        parcel.writeStringList(attachmentsUrls)
+        parcel.writeStringList(attachments)
+        parcel.writeTypedList(files)
+        parcel.writeTypedList(receivers)
         parcel.writeInt(commentsCount)
-        parcel.writeString(entityXmlId)
         parcel.writeInt(views)
         parcel.writeString(url)
-        parcel.writeTypedList(receivers)
-        parcel.writeTypedList(files)
     }
 
     override fun describeContents(): Int {
@@ -108,4 +79,5 @@ data class PortalFeedPost(
             return arrayOfNulls(size)
         }
     }
+
 }
