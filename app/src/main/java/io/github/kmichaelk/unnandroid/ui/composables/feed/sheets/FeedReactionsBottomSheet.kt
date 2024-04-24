@@ -80,12 +80,21 @@ fun FeedReactionsBottomSheet(
 
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     val pagerState = rememberPagerState { state.data.keys.size }
+
+    val checkLoaded = { idx: Int ->
+        val entry = state.data.entries.toTypedArray()[idx]
+        if (!entry.value.complete && entry.value.users.isEmpty()) {
+            viewModel.loadMore(entry.key)
+        }
+    }
     
     LaunchedEffect(selectedTabIndex) {
         pagerState.animateScrollToPage(selectedTabIndex)
+        checkLoaded(selectedTabIndex)
     }
     LaunchedEffect(pagerState.currentPage) {
         selectedTabIndex = pagerState.currentPage
+        checkLoaded(selectedTabIndex)
     }
 
     ModalBottomSheet(
@@ -124,7 +133,9 @@ fun FeedReactionsBottomSheet(
             HorizontalDivider()
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1.0f),
                 verticalAlignment = Alignment.Top,
             ) { idx ->
                 val entry = state.data.entries.toTypedArray()[idx]
