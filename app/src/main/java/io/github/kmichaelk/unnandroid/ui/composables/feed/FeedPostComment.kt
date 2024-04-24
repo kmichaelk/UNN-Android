@@ -88,11 +88,11 @@ fun FeedPostComment(
                 })
             }
 
-            if (comment.attachmentsUrls.isNotEmpty()) {
+            if (comment.attachments.isNotEmpty()) {
                 Spacer(Modifier.height(16.dp))
-                comment.attachmentsUrls.forEach { println("cmnt: '${comment}'") }
+                comment.attachments.forEach { println("cmnt: '${comment}'") }
                 ImageSlider(
-                    imageUrls = comment.attachmentsUrls.map { PortalService.P_URL + it },
+                    imageUrls = comment.attachments.map { PortalService.P_URL + it },
                 )
             }
 

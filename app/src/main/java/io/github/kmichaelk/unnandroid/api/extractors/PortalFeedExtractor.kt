@@ -146,7 +146,7 @@ class PortalFeedExtractor {
             ),
             datetime = datetime,
             html = html,
-            attachmentsUrls = attachmentsUrls,
+            attachments = attachmentsUrls,
             files = files,
         )
     }
