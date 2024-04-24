@@ -26,8 +26,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.OpenInNew
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,7 +39,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -59,13 +56,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.LocalImageLoader
 import coil.imageLoader
 import io.github.kmichaelk.unnandroid.api.service.PortalService
-import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
 import io.github.kmichaelk.unnandroid.models.portal.PortalUserRecord
 import io.github.kmichaelk.unnandroid.ui.AppScreen
 import io.github.kmichaelk.unnandroid.ui.LocalNavController
-import io.github.kmichaelk.unnandroid.ui.composables.base.AppDrawer
 import io.github.kmichaelk.unnandroid.ui.composables.FancyError
 import io.github.kmichaelk.unnandroid.ui.composables.FancyLoading
+import io.github.kmichaelk.unnandroid.ui.composables.LoadMore
+import io.github.kmichaelk.unnandroid.ui.composables.base.AppDrawer
 import io.github.kmichaelk.unnandroid.ui.composables.feed.FeedPost
 import io.github.kmichaelk.unnandroid.ui.extensions.navigate
 import io.github.kmichaelk.unnandroid.ui.viewmodels.FeedScreenViewModel
@@ -151,7 +148,10 @@ fun FeedScreen(
                     CompositionLocalProvider(LocalImageLoader provides viewModel.imageLoader) {
                         LazyColumn {
                             items(posts, key = { it.id }) {
-                                ElevatedCard(Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
+                                ElevatedCard(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 8.dp)) {
                                     FeedPost(
                                         post = it,
                                         onOpenComments = {
@@ -166,20 +166,10 @@ fun FeedScreen(
                                 }
                             }
                             item {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    if (state.error != null) {
-                                        Button(onClick = { viewModel.loadMore() }) {
-                                            Text("Загрузить еще")
-                                        }
-                                    } else {
-                                        CircularProgressIndicator()
-                                    }
-                                }
+                                LoadMore(
+                                    onLoadMore = { viewModel.loadMore() },
+                                    error = state.error
+                                )
                                 LaunchedEffect(Unit) {
                                     viewModel.loadMore()
                                 }

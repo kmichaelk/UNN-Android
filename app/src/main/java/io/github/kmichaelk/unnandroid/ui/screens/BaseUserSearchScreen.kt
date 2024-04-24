@@ -32,7 +32,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -60,6 +59,7 @@ import io.github.kmichaelk.unnandroid.ui.composables.base.AppDrawer
 import io.github.kmichaelk.unnandroid.ui.composables.FancyEmpty
 import io.github.kmichaelk.unnandroid.ui.composables.FancyError
 import io.github.kmichaelk.unnandroid.ui.composables.FancyLoading
+import io.github.kmichaelk.unnandroid.ui.composables.LoadMore
 import io.github.kmichaelk.unnandroid.ui.viewmodels.UserSearchScreenViewModel
 import kotlinx.coroutines.launch
 
@@ -167,20 +167,10 @@ fun <T> UserSearchScreen(
                         }
                         if ((state.offset + state.perPage) < results!!.total) {
                             item {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    if (state.error != null) {
-                                        Button(onClick = { viewModel.loadMore() }) {
-                                            Text("Загрузить еще")
-                                        }
-                                    } else {
-                                        CircularProgressIndicator()
-                                    }
-                                }
+                                LoadMore(
+                                    onLoadMore = { viewModel.loadMore() },
+                                    error = state.error
+                                )
                                 LaunchedEffect(Unit) {
                                     viewModel.loadMore()
                                 }

@@ -34,8 +34,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ListItem
@@ -50,7 +48,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -58,9 +55,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedVoteable
 import io.github.kmichaelk.unnandroid.models.portal.PortalUserRecord
+import io.github.kmichaelk.unnandroid.ui.composables.LoadMore
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAvatar
 import io.github.kmichaelk.unnandroid.ui.viewmodels.FeedReactionsBottomSheetViewModel
 
@@ -147,20 +144,10 @@ fun FeedReactionsBottomSheet(
                     }
                     if (!data.complete) {
                         item {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                if (state.error != null) {
-                                    Button(onClick = { viewModel.loadMore(entry.key) }) {
-                                        Text("Загрузить еще")
-                                    }
-                                } else {
-                                    CircularProgressIndicator()
-                                }
-                            }
+                            LoadMore(
+                                onLoadMore = { viewModel.loadMore(entry.key) },
+                                error = state.error
+                            )
                             LaunchedEffect(Unit) {
                                 viewModel.loadMore(entry.key)
                             }
