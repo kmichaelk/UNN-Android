@@ -17,26 +17,28 @@
 
 package io.github.kmichaelk.unnandroid.models.portal
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import com.google.gson.annotations.SerializedName
 
-@Parcelize
-data class PortalFeedPost(
-    val id: Int,
-    val entityXmlId: String,
-    val author: PortalFeedUser,
-    val datetime: String,
+data class PortalFeedReactionsData(
 
-    val html: String,
+    @SerializedName("like")
+    val like: Int,
 
-    val attachments: List<String>,
-    val files: List<PortalFeedAttachedFile>,
+    @SerializedName("kiss")
+    val kiss: Int,
 
-    val receivers: List<PortalFeedPostReceiver>,
-    val reactions: Map<PortalFeedReaction, Int>,
+    @SerializedName("laugh")
+    val laugh: Int,
 
-    val commentsCount: Int,
-    val views: Int,
+    @SerializedName("wonder")
+    val wonder: Int,
 
-    val url: String,
-) : Parcelable
+    @SerializedName("cry")
+    val cry: Int,
+
+    @SerializedName("angry")
+    val angry: Int,
+
+    @SerializedName("facepalm")
+    val facepalm: Int,
+)

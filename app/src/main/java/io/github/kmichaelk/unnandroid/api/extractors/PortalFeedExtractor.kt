@@ -17,10 +17,13 @@
 
 package io.github.kmichaelk.unnandroid.api.extractors
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedAttachedFile
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedComment
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPostReceiver
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedReaction
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
@@ -28,46 +31,14 @@ import java.util.regex.Pattern
 
 class PortalFeedExtractor {
 
+    private val gson = Gson()
+
     private val patternAvatar = Pattern.compile("background: url\\('(.*?)'\\)(.*?)")
 
     fun extractPost(raw: String): List<PortalFeedPost> = Jsoup.parse(raw).select(".feed-post-block").map {
-        val id = Integer.parseInt(it.attr("data-livefeed-id"))
-        val entityXmlId = it.selectFirst(".feed-comments-block")!!.attr("data-bx-comments-entity-xml-id")
-
-        //
-
-        val commentsCount = it.select(".feed-com-main-content").size +
-                (it.selectFirst(".feed-com-all")
-                    ?.attr("bx-mpl-comments-count")
-                    ?.let { v -> Integer.parseInt(v) }
-                    ?: 0)
-        val views = Integer.parseInt(it.selectFirst(".feed-content-view-cnt")!!.text())
-
-        val receivers = it.select(".feed-add-post-destination-new").map { dst ->
-            PortalFeedPostReceiver(
-                id = Integer.parseInt(dst.attr("data-bx-entity-id")),
-                name = dst.text(),
-                type = dst.attr("data-bx-entity-type")
-            )
-        }
-
-        //
-
         val content = it.selectFirst(".feed-post-cont-wrap")!!
 
         val authorBlock = content.selectFirst(".feed-post-user-name")!!
-
-        val authorUserId = Integer.parseInt(authorBlock.attr("bx-post-author-id"))
-        val authorName = authorBlock.text()
-        val avatarUrl = extractPostAvatar(it.selectFirst(".feed-user-avatar i")!!)
-
-        val datetime = content.selectFirst(".feed-time")!!.text()
-
-        val url = content.selectFirst(".feed-post-time-wrap > a")!!.attr("href")
-
-        val contentRoot = content.selectFirst(".feed-post-text")!!
-        contentRoot.getElementsByTag("script").forEach { script -> contentRoot.children().remove(script) }
-        val html = contentRoot.html()
 
         val attachmentsUrls = mutableListOf<String>()
         content.select(".disk-ui-file-thumbnails-web-grid-img-item").forEach { thumb ->
@@ -80,74 +51,90 @@ class PortalFeedExtractor {
             attachmentsUrls.add(thumb.attr("data-bx-src"))
         }
 
-        val files = content.select(".feed-com-file-name-wrap").map { file ->
-            val fileInfo = file.selectFirst(".feed-com-file-name")!!
-            PortalFeedAttachedFile(
-                title = fileInfo.attr("title"),
-                size = file.selectFirst(".feed-com-file-size")!!.text(),
-                url = fileInfo.attr("data-src")
-            )
-        }
-
-        //
+        val textContentRoot = content.selectFirst(".feed-post-text")!!
+        textContentRoot.getElementsByTag("script").forEach { script -> textContentRoot.children().remove(script) }
+        val html = textContentRoot.html()
 
         PortalFeedPost(
-            id = id,
+            id = Integer.parseInt(it.attr("data-livefeed-id")),
+
+            entityXmlId = it.selectFirst(".feed-comments-block")!!.attr("data-bx-comments-entity-xml-id"),
+
             author = PortalFeedUser(
-                bxId = authorUserId,
-                name = authorName,
-                avatarUrl = avatarUrl
+                bxId = Integer.parseInt(authorBlock.attr("bx-post-author-id")),
+                name = authorBlock.text(),
+                avatarUrl = extractPostAvatar(it.selectFirst(".feed-user-avatar i")!!)
             ),
-            datetime = datetime,
+
+            datetime = content.selectFirst(".feed-time")!!.text(),
+
             html = html,
+
             attachments = attachmentsUrls,
-            commentsCount = commentsCount,
-            views = views,
-            url = url,
-            entityXmlId = entityXmlId,
-            receivers = receivers,
-            files = files,
+
+            files = content.select(".feed-com-file-name-wrap").map { file ->
+                val fileInfo = file.selectFirst(".feed-com-file-name")!!
+                PortalFeedAttachedFile(
+                    title = fileInfo.attr("title"),
+                    size = file.selectFirst(".feed-com-file-size")!!.text(),
+                    url = fileInfo.attr("data-src")
+                )
+            },
+
+            receivers = it.select(".feed-add-post-destination-new").map { dst ->
+                PortalFeedPostReceiver(
+                    id = Integer.parseInt(dst.attr("data-bx-entity-id")),
+                    name = dst.text(),
+                    type = dst.attr("data-bx-entity-type")
+                )
+            },
+
+            reactions = extractReactions(content.selectFirst(".feed-post-emoji-icon-container")),
+
+            commentsCount = it.select(".feed-com-main-content").size +
+                    (it.selectFirst(".feed-com-all")
+                        ?.attr("bx-mpl-comments-count")
+                        ?.let { v -> Integer.parseInt(v) }
+                        ?: 0),
+
+            views = Integer.parseInt(it.selectFirst(".feed-content-view-cnt")!!.text()),
+
+            url = content.selectFirst(".feed-post-time-wrap > a")!!.attr("href"),
         )
     }
 
     fun extractComments(raw: String): List<PortalFeedComment> = Jsoup.parse(raw).select(".feed-com-block-cover").map {
-        val id = Integer.parseInt(it.attr("bx-mpl-entity-id"))
-
-        val datetime = it.selectFirst(".feed-time")!!.text()
-
-        val authorBlock = it.selectFirst(".feed-com-user-box > .feed-author-name")!!
-        val authorUserId = Integer.parseInt(authorBlock.attr("bx-tooltip-user-id"))
-        val authorName = authorBlock.text()
-        val avatarUrl = it.selectFirst(".feed-com-avatar > img")!!.attr("src").run {
-            ifEmpty { null }
-        }
-
-        val attachmentsUrls = it.select(".feed-com-img-load > img").map { thumb ->
-            thumb.attr("data-src")
-        }
-
-        val files = it.select(".feed-com-file-name-wrap").map { file ->
-            val fileInfo = file.selectFirst(".feed-com-file-name")!!
-            PortalFeedAttachedFile(
-                title = fileInfo.attr("title"),
-                size = file.selectFirst(".feed-com-file-size")!!.text(),
-                url = fileInfo.attr("data-src")
-            )
-        }
-
-        val html = it.selectFirst(".feed-com-text-inner-inner > div")!!.html()
-
         PortalFeedComment(
-            id = id,
-            author = PortalFeedUser(
-                bxId = authorUserId,
-                name = authorName,
-                avatarUrl = avatarUrl
-            ),
-            datetime = datetime,
-            html = html,
-            attachments = attachmentsUrls,
-            files = files,
+            id = Integer.parseInt(it.attr("bx-mpl-entity-id")),
+
+            author = it.selectFirst(".feed-com-user-box > .feed-author-name")!!.run {
+                PortalFeedUser(
+                    bxId = Integer.parseInt(attr("bx-tooltip-user-id")),
+                    name = text(),
+                    avatarUrl = it.selectFirst(".feed-com-avatar > img")!!.attr("src").run {
+                        ifEmpty { null }
+                    }
+                )
+            },
+
+            datetime = it.selectFirst(".feed-time")!!.text(),
+
+            html = it.selectFirst(".feed-com-text-inner-inner > div")!!.html(),
+
+            attachments = it.select(".feed-com-img-load > img").map { thumb ->
+                thumb.attr("data-src")
+            },
+
+            files = it.select(".feed-com-file-name-wrap").map { file ->
+                val fileInfo = file.selectFirst(".feed-com-file-name")!!
+                PortalFeedAttachedFile(
+                    title = fileInfo.attr("title"),
+                    size = file.selectFirst(".feed-com-file-size")!!.text(),
+                    url = fileInfo.attr("data-src")
+                )
+            },
+
+            reactions = extractReactions(it.selectFirst(".feed-post-emoji-icon-container"))
         )
     }
 
@@ -160,4 +147,9 @@ class PortalFeedExtractor {
 
         return matcher.group(1)
     }
+
+    private fun extractReactions(wrapper: Element?): Map<PortalFeedReaction, Int>
+        = wrapper?.let { it.attr("data-reactions-data").let { raw ->
+        gson.fromJson(raw, object : TypeToken<Map<PortalFeedReaction, Int>>() {}.type)
+    } } ?: mapOf()
 }

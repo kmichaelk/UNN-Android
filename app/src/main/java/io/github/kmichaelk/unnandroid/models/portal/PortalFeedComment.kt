@@ -24,5 +24,7 @@ data class PortalFeedComment(
     val html: String,
 
     val attachments: List<String>,
-    val files: List<PortalFeedAttachedFile>
+    val files: List<PortalFeedAttachedFile>,
+
+    val reactions: Map<PortalFeedReaction, Int>,
 )
