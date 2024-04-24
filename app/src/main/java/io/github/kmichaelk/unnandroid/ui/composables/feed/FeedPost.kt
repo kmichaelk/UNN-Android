@@ -52,11 +52,8 @@ import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -72,12 +69,14 @@ import androidx.compose.ui.unit.sp
 import io.github.kmichaelk.unnandroid.api.service.PortalService
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
-import io.github.kmichaelk.unnandroid.ui.composables.ex.HtmlText
 import io.github.kmichaelk.unnandroid.ui.composables.ImageSlider
+import io.github.kmichaelk.unnandroid.ui.composables.ex.HtmlText
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAttachedFileLink
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAvatar
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedReactionsStack
 import io.github.kmichaelk.unnandroid.ui.composables.feed.sheets.FeedPostReceiversBottomSheet
+
+private const val FLAG_RECEIVERS_OPEN = 1 shl 0
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -86,11 +85,10 @@ fun FeedPost(
     onDownload: (DownloadManager.Request) -> Unit,
     onUserOpen: (PortalFeedUser) -> Unit,
     onOpenComments: () -> Unit,
-    bottomSheetState: SheetState = rememberModalBottomSheetState()
 ) {
     val uriHandler = LocalUriHandler.current
 
-    var receiversSheetOpen by rememberSaveable { mutableStateOf(false) }
+    var flags by rememberSaveable { mutableStateOf(0) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -178,7 +176,7 @@ fun FeedPost(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
-                TextButton(onClick = { receiversSheetOpen = true }) {
+                TextButton(onClick = { flags = flags or FLAG_RECEIVERS_OPEN }) {
                     Icon(Icons.Default.People, contentDescription = "Получатели")
                     Spacer(Modifier.width(6.dp))
                     Text("${post.receivers.size}")
@@ -203,17 +201,11 @@ fun FeedPost(
         }
     }
 
-    if (receiversSheetOpen) {
-        ModalBottomSheet(
-            onDismissRequest = {
-                receiversSheetOpen = false
-            },
-            sheetState = bottomSheetState,
-        ) {
-            FeedPostReceiversBottomSheet(
-                receivers = post.receivers,
-                onUserOpen = onUserOpen,
-            )
-        }
+    if (flags and FLAG_RECEIVERS_OPEN != 0) {
+        FeedPostReceiversBottomSheet(
+            receivers = post.receivers,
+            onUserOpen = onUserOpen,
+            onDismiss = { flags = flags and FLAG_RECEIVERS_OPEN.inv() }
+        )
     }
 }

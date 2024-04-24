@@ -28,56 +28,68 @@ import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPostReceiver
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedPostReceiversBottomSheet(
     receivers: List<PortalFeedPostReceiver>,
     onUserOpen: (PortalFeedUser) -> Unit,
+    sheetState: SheetState = rememberModalBottomSheetState(),
+    onDismiss: () -> Unit,
 ) {
-    Column {
-        Text(
-            "Получатели",
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-            style = MaterialTheme.typography.titleMedium
-        )
-        LazyColumn(Modifier.fillMaxSize()) {
-            items(receivers) {
-                ListItem(
-                    leadingContent = {
-                        Icon(
-                            when (it.type) {
-                                "user" -> Icons.Default.Person
-                                "group" -> Icons.Default.Group
-                                "department" -> Icons.Default.Groups
-                                else -> Icons.Default.Circle
-                            },
-                            contentDescription = null
-                        )
-                    },
-                    headlineContent = {
-                        Text(it.name)
-                    },
-                    modifier = Modifier.clickable {
-                        if (it.type == "user") {
-                            onUserOpen(
-                                PortalFeedUser(
-                                    bxId = it.id,
-                                    name = it.name,
-                                    avatarUrl = null
-                                )
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+    ) {
+        Column {
+            Text(
+                "Получатели",
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                style = MaterialTheme.typography.titleMedium
+            )
+            LazyColumn(Modifier.fillMaxSize()) {
+                items(receivers) {
+                    ListItem(
+                        leadingContent = {
+                            Icon(
+                                when (it.type) {
+                                    "user" -> Icons.Default.Person
+                                    "group" -> Icons.Default.Group
+                                    "department" -> Icons.Default.Groups
+                                    else -> Icons.Default.Circle
+                                },
+                                contentDescription = null
                             )
+                        },
+                        headlineContent = {
+                            Text(it.name)
+                        },
+                        modifier = Modifier.clickable {
+                            if (it.type == "user") {
+                                onUserOpen(
+                                    PortalFeedUser(
+                                        bxId = it.id,
+                                        name = it.name,
+                                        avatarUrl = null
+                                    )
+                                )
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     }

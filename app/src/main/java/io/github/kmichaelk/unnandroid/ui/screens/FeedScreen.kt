@@ -81,7 +81,6 @@ fun FeedScreen(
     val navController = LocalNavController.current
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val pullToRefreshState = rememberPullToRefreshState()
-    val postsBottomSheetState = rememberModalBottomSheetState()
 
     val uriHandler = LocalUriHandler.current
 
@@ -161,7 +160,6 @@ fun FeedScreen(
                                             )
                                         },
                                         onUserOpen = onUserOpen,
-                                        bottomSheetState = postsBottomSheetState,
                                         onDownload = viewModel::authorizeDownload,
                                     )
                                 }

@@ -47,6 +47,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -66,6 +67,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.kmichaelk.unnandroid.models.journal.JournalSectionInfo
 import io.github.kmichaelk.unnandroid.ui.composables.FancyError
 import io.github.kmichaelk.unnandroid.ui.composables.IconText
+import io.github.kmichaelk.unnandroid.ui.state.SectionInfoBottomSheetState
 import io.github.kmichaelk.unnandroid.ui.viewmodels.SectionInfoBottomSheetViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,12 +75,11 @@ import io.github.kmichaelk.unnandroid.ui.viewmodels.SectionInfoBottomSheetViewMo
 fun SectionInfoBottomSheet(
     viewModel: SectionInfoBottomSheetViewModel = hiltViewModel(),
     sectionId: String,
-    onResult: (String?) -> Unit
+    onResult: (String?) -> Unit,
+    sheetState: SheetState = rememberModalBottomSheetState(),
 ) {
     val state by viewModel.uiState.collectAsState()
     var mode by remember { mutableStateOf(false) }
-
-    val modalBottomSheetState = rememberModalBottomSheetState()
 
     LaunchedEffect(sectionId) {
         viewModel.load(sectionId)
@@ -106,11 +107,13 @@ fun SectionInfoBottomSheet(
             if (!state.isSubmitting)
                 onResult(null)
         },
-        sheetState = modalBottomSheetState
+        sheetState = sheetState
     ) {
         if (state.isLoading) {
             Box(
-                modifier = Modifier.height(500.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .height(500.dp)
+                    .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
@@ -131,7 +134,9 @@ fun SectionInfoBottomSheet(
                 .padding(horizontal = 16.dp)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
