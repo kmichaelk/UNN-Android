@@ -90,7 +90,6 @@ fun FeedPostComment(
 
         if (comment.attachments.isNotEmpty()) {
             Spacer(Modifier.height(16.dp))
-            comment.attachments.forEach { println("cmnt: '${comment}'") }
             ImageSlider(
                 imageUrls = comment.attachments.map { PortalService.P_URL + it },
             )
