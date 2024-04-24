@@ -17,38 +17,12 @@
 
 package io.github.kmichaelk.unnandroid.models.portal
 
-import android.os.Parcel
 import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class PortalFeedPostReceiver(
     val id: Int,
     val name: String,
     val type: String,
-) : Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readString()!!,
-        parcel.readString()!!
-    ) {
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
-        parcel.writeString(name)
-        parcel.writeString(type)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<PortalFeedPostReceiver> {
-        override fun createFromParcel(parcel: Parcel): PortalFeedPostReceiver {
-            return PortalFeedPostReceiver(parcel)
-        }
-
-        override fun newArray(size: Int): Array<PortalFeedPostReceiver?> {
-            return arrayOfNulls(size)
-        }
-    }
-}
+) : Parcelable

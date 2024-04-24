@@ -17,9 +17,10 @@
 
 package io.github.kmichaelk.unnandroid.models.portal
 
-import android.os.Parcel
 import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class PortalFeedPost(
     val id: Int,
     val entityXmlId: String,
@@ -36,48 +37,4 @@ data class PortalFeedPost(
     val views: Int,
 
     val url: String,
-) : Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readString()!!,
-        parcel.readParcelable(PortalFeedUser::class.java.classLoader)!!,
-        parcel.readString()!!,
-        parcel.readString()!!,
-        parcel.createStringArrayList()!!,
-        parcel.createTypedArrayList(PortalFeedAttachedFile)!!,
-        parcel.createTypedArrayList(PortalFeedPostReceiver)!!,
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readString()!!
-    ) {
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
-        parcel.writeString(entityXmlId)
-        parcel.writeParcelable(author, flags)
-        parcel.writeString(datetime)
-        parcel.writeString(html)
-        parcel.writeStringList(attachments)
-        parcel.writeTypedList(files)
-        parcel.writeTypedList(receivers)
-        parcel.writeInt(commentsCount)
-        parcel.writeInt(views)
-        parcel.writeString(url)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<PortalFeedPost> {
-        override fun createFromParcel(parcel: Parcel): PortalFeedPost {
-            return PortalFeedPost(parcel)
-        }
-
-        override fun newArray(size: Int): Array<PortalFeedPost?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-}
+) : Parcelable
