@@ -19,6 +19,7 @@ package io.github.kmichaelk.unnandroid.ui.composables.feed
 
 import android.app.DownloadManager
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -45,6 +46,7 @@ import io.github.kmichaelk.unnandroid.ui.composables.ImageSlider
 import io.github.kmichaelk.unnandroid.ui.composables.ex.HtmlText
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAttachedFileLink
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAvatar
+import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedReactionsStack
 
 @Composable
 fun FeedPostComment(
@@ -75,6 +77,26 @@ fun FeedPostComment(
                     lineHeight = 12.sp,
                     fontWeight = FontWeight.Light
                 )
+            }
+            if (comment.reactions.isNotEmpty()) {
+                Spacer(Modifier.weight(1.0f))
+                Row(
+                    modifier = Modifier
+                        .clip(MaterialTheme.shapes.medium)
+                        .clickable {  }
+                        .padding(4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        "${comment.reactions.values.sum()}",
+                        fontSize = 13.sp,
+                    )
+                    Spacer(Modifier.width(2.dp))
+                    FeedReactionsStack(
+                        reactions = comment.reactions,
+                        size = 18.dp,
+                    )
+                }
             }
         }
         Spacer(Modifier.height(4.dp))

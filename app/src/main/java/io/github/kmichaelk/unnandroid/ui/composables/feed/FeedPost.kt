@@ -76,6 +76,7 @@ import io.github.kmichaelk.unnandroid.ui.composables.ex.HtmlText
 import io.github.kmichaelk.unnandroid.ui.composables.ImageSlider
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAttachedFileLink
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAvatar
+import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedReactionsStack
 import io.github.kmichaelk.unnandroid.ui.composables.feed.sheets.FeedPostReceiversBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -148,6 +149,25 @@ fun FeedPost(
                         onDownload = onDownload,
                     )
                 }
+            }
+        }
+
+        if (post.reactions.isNotEmpty()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                FeedReactionsStack(
+                    reactions = post.reactions,
+                    size = 24.dp,
+                )
+                Spacer(Modifier.width(4.dp))
+                Text(
+                    "Оценили ${post.reactions.values.sum()} человек",
+                    fontSize = 14.sp,
+                )
             }
         }
 
