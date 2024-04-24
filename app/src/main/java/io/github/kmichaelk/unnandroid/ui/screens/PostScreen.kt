@@ -20,6 +20,7 @@ package io.github.kmichaelk.unnandroid.ui.screens
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,6 +28,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.OpenInNew
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -146,11 +148,16 @@ fun PostScreen(
                             Spacer(Modifier.height(8.dp))
                         }
                         items(comments, key = { it.id }) {
-                            FeedPostComment(
-                                comment = it,
-                                onUserOpen = onUserOpen,
-                                onDownload = viewModel::authorizeDownload
-                            )
+                            ElevatedCard(Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp, horizontal = 8.dp)
+                            ) {
+                                FeedPostComment(
+                                    comment = it,
+                                    onUserOpen = onUserOpen,
+                                    onDownload = viewModel::authorizeDownload
+                                )
+                            }
                         }
                         item {
                             Spacer(Modifier.height(32.dp))

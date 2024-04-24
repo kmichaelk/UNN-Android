@@ -29,7 +29,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,8 +41,8 @@ import androidx.compose.ui.unit.sp
 import io.github.kmichaelk.unnandroid.api.service.PortalService
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedComment
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
-import io.github.kmichaelk.unnandroid.ui.composables.ex.HtmlText
 import io.github.kmichaelk.unnandroid.ui.composables.ImageSlider
+import io.github.kmichaelk.unnandroid.ui.composables.ex.HtmlText
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAttachedFileLink
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAvatar
 
@@ -55,65 +54,65 @@ fun FeedPostComment(
 ) {
     val uriHandler = LocalUriHandler.current
 
-    OutlinedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 4.dp)
-    ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(MaterialTheme.shapes.medium)
-                    .clickable { onUserOpen(comment.author) }
-                    .padding(12.dp),
-            ) {
-                Box(Modifier.size(48.dp)) {
-                    FeedAvatar(url = comment.author.avatarUrl)
-                }
-                Spacer(Modifier.width(16.dp))
-                Column {
-                    Text(comment.author.name, fontSize = 14.sp)
-                    Text(comment.datetime, fontSize = 12.sp, lineHeight = 12.sp, fontWeight = FontWeight.Light)
-                }
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(MaterialTheme.shapes.medium)
+                .clickable { onUserOpen(comment.author) }
+                .padding(12.dp),
+        ) {
+            Box(Modifier.size(48.dp)) {
+                FeedAvatar(url = comment.author.avatarUrl)
             }
-            Spacer(Modifier.height(4.dp))
-
-            Box(Modifier.padding(horizontal = 12.dp)) {
-                HtmlText(comment.html, onClicked = {
-                    try {
-                        uriHandler.openUri(it)
-                    } catch (ignore: Exception) {}
-                })
-            }
-
-            if (comment.attachments.isNotEmpty()) {
-                Spacer(Modifier.height(16.dp))
-                comment.attachments.forEach { println("cmnt: '${comment}'") }
-                ImageSlider(
-                    imageUrls = comment.attachments.map { PortalService.P_URL + it },
+            Spacer(Modifier.width(16.dp))
+            Column {
+                Text(comment.author.name, fontSize = 14.sp)
+                Text(
+                    comment.datetime,
+                    fontSize = 12.sp,
+                    lineHeight = 12.sp,
+                    fontWeight = FontWeight.Light
                 )
             }
+        }
+        Spacer(Modifier.height(4.dp))
 
-            Spacer(Modifier.height(4.dp))
+        Box(Modifier.padding(horizontal = 12.dp)) {
+            HtmlText(comment.html, onClicked = {
+                try {
+                    uriHandler.openUri(it)
+                } catch (ignore: Exception) {
+                }
+            })
+        }
 
-            if (comment.files.isNotEmpty()) {
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 8.dp)
-                ) {
-                    comment.files.forEach {
-                        FeedAttachedFileLink(
-                            file = it,
-                            onDownload = onDownload,
-                        )
-                    }
+        if (comment.attachments.isNotEmpty()) {
+            Spacer(Modifier.height(16.dp))
+            comment.attachments.forEach { println("cmnt: '${comment}'") }
+            ImageSlider(
+                imageUrls = comment.attachments.map { PortalService.P_URL + it },
+            )
+        }
+
+        Spacer(Modifier.height(4.dp))
+
+        if (comment.files.isNotEmpty()) {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
+            ) {
+                comment.files.forEach {
+                    FeedAttachedFileLink(
+                        file = it,
+                        onDownload = onDownload,
+                    )
                 }
             }
-
-            Spacer(Modifier.height(16.dp))
         }
+
+        Spacer(Modifier.height(16.dp))
     }
 }
