@@ -55,6 +55,6 @@ class PersistenceModule {
     @Provides
     @Named("schedule")
     @Singleton
-    fun provideSchedulePreferences(@ApplicationContext context: Context) =
+    fun provideSchedulePreferences(@ApplicationContext context: Context): SharedPreferences =
         context.getSharedPreferences("schedule", Context.MODE_PRIVATE)
 }
