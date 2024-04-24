@@ -56,7 +56,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import io.github.kmichaelk.unnandroid.models.portal.PortalPerson
-import io.github.kmichaelk.unnandroid.ui.composables.AppDrawer
+import io.github.kmichaelk.unnandroid.ui.composables.base.AppDrawer
 import io.github.kmichaelk.unnandroid.ui.composables.FancyEmpty
 import io.github.kmichaelk.unnandroid.ui.composables.FancyError
 import io.github.kmichaelk.unnandroid.ui.composables.FancyLoading

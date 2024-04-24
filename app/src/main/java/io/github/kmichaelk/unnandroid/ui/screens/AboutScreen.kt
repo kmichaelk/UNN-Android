@@ -48,7 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.kmichaelk.unnandroid.BuildConfig
 import io.github.kmichaelk.unnandroid.R
-import io.github.kmichaelk.unnandroid.ui.composables.AppDrawer
+import io.github.kmichaelk.unnandroid.ui.composables.base.AppDrawer
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

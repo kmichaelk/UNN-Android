@@ -48,7 +48,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import io.github.kmichaelk.unnandroid.ui.composables.DismissibleSnackbar
+import io.github.kmichaelk.unnandroid.ui.composables.ex.DismissibleSnackbar
 import io.github.kmichaelk.unnandroid.ui.viewmodels.WebinarsScreenViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat

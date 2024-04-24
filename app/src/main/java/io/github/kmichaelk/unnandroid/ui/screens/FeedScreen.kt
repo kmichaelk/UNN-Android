@@ -62,7 +62,7 @@ import io.github.kmichaelk.unnandroid.api.service.PortalService
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
 import io.github.kmichaelk.unnandroid.ui.AppScreen
 import io.github.kmichaelk.unnandroid.ui.LocalNavController
-import io.github.kmichaelk.unnandroid.ui.composables.AppDrawer
+import io.github.kmichaelk.unnandroid.ui.composables.base.AppDrawer
 import io.github.kmichaelk.unnandroid.ui.composables.FancyError
 import io.github.kmichaelk.unnandroid.ui.composables.FancyLoading
 import io.github.kmichaelk.unnandroid.ui.composables.feed.FeedPost

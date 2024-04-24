@@ -45,9 +45,9 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.kmichaelk.unnandroid.models.sourceS.SourceSubjectRef
-import io.github.kmichaelk.unnandroid.ui.composables.CollapsibleLazyColumn
-import io.github.kmichaelk.unnandroid.ui.composables.CollapsibleSection
-import io.github.kmichaelk.unnandroid.ui.composables.DismissibleSnackbar
+import io.github.kmichaelk.unnandroid.ui.composables.ex.CollapsibleLazyColumn
+import io.github.kmichaelk.unnandroid.ui.composables.ex.CollapsibleSection
+import io.github.kmichaelk.unnandroid.ui.composables.ex.DismissibleSnackbar
 import io.github.kmichaelk.unnandroid.ui.composables.IconText
 import io.github.kmichaelk.unnandroid.ui.viewmodels.MaterialsScreenViewModel
 import kotlinx.coroutines.launch

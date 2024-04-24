@@ -15,7 +15,24 @@
  * along with UNN-Android.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.kmichaelk.unnandroid.ui.composables
+/*
+ * This file is part of UNN-Android.
+ *
+ * UNN-Android is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * UNN-Android is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with UNN-Android.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package io.github.kmichaelk.unnandroid.ui.composables.schedule
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -46,6 +63,7 @@ import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.kmichaelk.unnandroid.models.schedule.ScheduleEntity
+import io.github.kmichaelk.unnandroid.ui.composables.FancyError
 import io.github.kmichaelk.unnandroid.ui.extensions.icon
 import io.github.kmichaelk.unnandroid.ui.viewmodels.ScheduleSearchViewModel
 

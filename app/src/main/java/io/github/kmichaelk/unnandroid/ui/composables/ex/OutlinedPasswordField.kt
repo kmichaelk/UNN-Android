@@ -15,7 +15,7 @@
  * along with UNN-Android.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.kmichaelk.unnandroid.ui.composables
+package io.github.kmichaelk.unnandroid.ui.composables.ex
 
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions

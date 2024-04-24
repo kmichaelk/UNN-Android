@@ -42,7 +42,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import io.github.kmichaelk.unnandroid.ui.composables.AppDrawer
+import io.github.kmichaelk.unnandroid.ui.composables.base.AppDrawer
 import io.github.kmichaelk.unnandroid.ui.composables.FancyError
 import io.github.kmichaelk.unnandroid.ui.composables.FancyLoading
 import io.github.kmichaelk.unnandroid.ui.viewmodels.StaticDataScreenViewModel

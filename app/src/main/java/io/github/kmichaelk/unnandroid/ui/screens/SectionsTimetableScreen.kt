@@ -102,13 +102,13 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.kmichaelk.unnandroid.models.journal.JournalSection
 import io.github.kmichaelk.unnandroid.ui.LocalNavController
-import io.github.kmichaelk.unnandroid.ui.composables.CutoutFloatingActionButton
-import io.github.kmichaelk.unnandroid.ui.composables.DismissibleSnackbar
+import io.github.kmichaelk.unnandroid.ui.composables.ex.CutoutFloatingActionButton
+import io.github.kmichaelk.unnandroid.ui.composables.ex.DismissibleSnackbar
 import io.github.kmichaelk.unnandroid.ui.composables.FancyEmpty
 import io.github.kmichaelk.unnandroid.ui.composables.FancyError
 import io.github.kmichaelk.unnandroid.ui.composables.FancyLoading
 import io.github.kmichaelk.unnandroid.ui.composables.IconText
-import io.github.kmichaelk.unnandroid.ui.composables.SectionInfoBottomSheet
+import io.github.kmichaelk.unnandroid.ui.composables.sections.SectionInfoBottomSheet
 import io.github.kmichaelk.unnandroid.ui.extensions.popBackStackLifecycleAware
 import io.github.kmichaelk.unnandroid.ui.viewmodels.SectionsTimetableScreenViewModel
 import io.github.kmichaelk.unnandroid.utils.debounced

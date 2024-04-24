@@ -52,8 +52,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import io.github.kmichaelk.unnandroid.ui.composables.CollapsibleLazyColumn
-import io.github.kmichaelk.unnandroid.ui.composables.CollapsibleSection
+import io.github.kmichaelk.unnandroid.ui.composables.ex.CollapsibleLazyColumn
+import io.github.kmichaelk.unnandroid.ui.composables.ex.CollapsibleSection
 import io.github.kmichaelk.unnandroid.ui.composables.FancyEmpty
 import io.github.kmichaelk.unnandroid.ui.viewmodels.MarksScreenViewModel
 import java.text.SimpleDateFormat

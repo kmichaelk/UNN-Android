@@ -61,7 +61,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.kmichaelk.unnandroid.R
-import io.github.kmichaelk.unnandroid.ui.composables.OutlinedPasswordField
+import io.github.kmichaelk.unnandroid.ui.composables.ex.OutlinedPasswordField
 import io.github.kmichaelk.unnandroid.ui.extensions.autofill
 import io.github.kmichaelk.unnandroid.ui.viewmodels.AuthScreenViewModel
 
