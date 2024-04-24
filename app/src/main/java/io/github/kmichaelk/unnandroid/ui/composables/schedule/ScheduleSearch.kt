@@ -124,7 +124,6 @@ fun ScheduleSearch(
                 )
         },
     ) {
-        println("isSearching = ${isSearching}, results = ${results}, query = ${query}")
         if (error != null) {
             FancyError(error!!)
         } else if (!isSearching && results.isEmpty() && query == currentQuery) {
