@@ -183,7 +183,8 @@ fun UserDetailScreen(
 
                 it.profiles.forEach { profile ->
                     when (profile.type) {
-                        PortalUserType.Student -> {
+                        PortalUserType.Student,
+                        PortalUserType.Graduate -> {
                             item { ListItem(
                                 leadingContent = { Icon(Icons.Default.School, contentDescription = null) },
                                 headlineContent = { Text("Учебное подразделение") },
@@ -201,11 +202,13 @@ fun UserDetailScreen(
                                     supportingContent = { Text(it.title) }
                                 ) }
                             }
-                            item { ListItem(
-                                leadingContent = { Icon(Icons.Default.TransferWithinAStation, contentDescription = null) },
-                                headlineContent = { Text("Квалификация") },
-                                supportingContent = { Text(profile.eduQualification!!.title) }
-                            ) }
+                            profile.eduQualification?.let {
+                                item { ListItem(
+                                    leadingContent = { Icon(Icons.Default.TransferWithinAStation, contentDescription = null) },
+                                    headlineContent = { Text("Квалификация") },
+                                    supportingContent = { Text(it.title) }
+                                ) }
+                            }
                             item { ListItem(
                                 leadingContent = { Icon(Icons.Default.Group, contentDescription = null) },
                                 headlineContent = { Text("Группа") },
@@ -231,6 +234,16 @@ fun UserDetailScreen(
                                 headlineContent = { Text("Форма обучения") },
                                 supportingContent = { Text(profile.eduForm!!) }
                             ) }
+                            profile.manager?.let { manager ->
+                                item { ListItem(
+                                    leadingContent = { Icon(Icons.Default.Person, contentDescription = null) },
+                                    headlineContent = { Text("Научный руководитель") },
+                                    supportingContent = { Text(manager.name) },
+                                    modifier = Modifier.clickable {
+                                        navController.navigate("${AppScreen.User.name}/${manager.id}")
+                                    }
+                                ) }
+                            }
                         }
                         PortalUserType.Employee -> {
                             item { ListItem(

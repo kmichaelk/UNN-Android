@@ -27,4 +27,7 @@ enum class PortalUserType {
     @SerializedName("student")
     Student,
 
+    @SerializedName("aspirant")
+    Graduate
+
 }
