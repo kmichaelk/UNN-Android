@@ -41,12 +41,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPostReceiver
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
+import io.github.kmichaelk.unnandroid.models.portal.PortalUserRecord
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedPostReceiversBottomSheet(
     receivers: List<PortalFeedPostReceiver>,
-    onUserOpen: (PortalFeedUser) -> Unit,
+    onUserOpen: (PortalUserRecord) -> Unit,
     sheetState: SheetState = rememberModalBottomSheetState(),
     onDismiss: () -> Unit,
 ) {

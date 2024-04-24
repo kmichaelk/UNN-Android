@@ -22,6 +22,8 @@ import io.github.kmichaelk.unnandroid.models.portal.PortalBitrixIdMapping
 import io.github.kmichaelk.unnandroid.models.portal.PortalCurrentUser
 import io.github.kmichaelk.unnandroid.models.portal.PortalEmployee
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedData
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedEntityType
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedReactionsResponse
 import io.github.kmichaelk.unnandroid.models.portal.PortalMarks
 import io.github.kmichaelk.unnandroid.models.portal.PortalOrder
 import io.github.kmichaelk.unnandroid.models.portal.PortalPaginatedResults
@@ -107,6 +109,19 @@ interface PortalService {
         @Field("AJAX_POST") ajaxPost: BitrixBool = BitrixBool.Y,
     ): PortalPostCommentsResponse
 
+    @InjectCsrfTokenHeader
+    @POST("bitrix/services/main/ajax.php?action=main.rating.list")
+    @FormUrlEncoded
+    suspend fun getReactions(
+        @Field("params[RATING_VOTE_TYPE_ID]") entityType: String,
+        @Field("params[RATING_VOTE_KEY_SIGNED]") voteKey: String,
+        @Field("params[RATING_VOTE_ENTITY_ID]") entityId: Int,
+        @Field("params[RATING_VOTE_LIST_PAGE]") pageNumber: Int,
+        @Field("params[RATING_VOTE_REACTION]") reactionFilter: String,
+
+        @Field("params[PATH_TO_USER_PROFILE]") pathToUserProfile: String = "/company/personal/user/#user_id#/",
+    ): PortalBitrixAjaxResponse<PortalFeedReactionsResponse>
+
     @GET("bitrix/vuz/api/stipends/")
     suspend fun getScholarships(): List<PortalScholarship>
 
@@ -141,8 +156,8 @@ interface PortalService {
 
     enum class BitrixBool {
         Y, N;
-        companion object { fun from(b: Boolean): BitrixBool = if (b) Y else N; }
-        override fun toString(): String = name
+        companion object { fun from(b: Boolean): BitrixBool = if (b) Y else N }
+        override fun toString() = name
     }
 
     @MustBeDocumented

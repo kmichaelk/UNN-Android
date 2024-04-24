@@ -19,6 +19,7 @@ package io.github.kmichaelk.unnandroid.api.impl
 
 import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
+import com.google.gson.annotations.SerializedName
 import io.github.kmichaelk.unnandroid.api.PortalClient
 import io.github.kmichaelk.unnandroid.api.auth.AuthDataHolder
 import io.github.kmichaelk.unnandroid.api.auth.PortalAuthInterceptor
@@ -28,6 +29,8 @@ import io.github.kmichaelk.unnandroid.models.portal.PortalCurrentUser
 import io.github.kmichaelk.unnandroid.models.portal.PortalEmployee
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedComment
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedReaction
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedVoteable
 import io.github.kmichaelk.unnandroid.models.portal.PortalMarks
 import io.github.kmichaelk.unnandroid.models.portal.PortalOrder
 import io.github.kmichaelk.unnandroid.models.portal.PortalPaginatedResults
@@ -102,6 +105,24 @@ class PortalClientImpl @Inject constructor(
         entityXmlId = entityXmlId,
         postId = Integer.parseInt(entityXmlId.replace("BLOG_", "")),
     ).messageList)
+
+    override suspend fun getReactions(
+        entity: PortalFeedVoteable,
+        pageNumber: Int,
+        reaction: PortalFeedReaction?
+    ) = service.getReactions(
+        entityType = entity.getEntityType().let {
+            it.declaringJavaClass.getField(it.name)
+                .getAnnotation(SerializedName::class.java)!!.value
+        },
+        voteKey = entity.getVoteKey(),
+        entityId = entity.id,
+        pageNumber = pageNumber + 1,
+        reactionFilter = reaction?.let {
+            it.declaringJavaClass.getField(it.name)
+                .getAnnotation(SerializedName::class.java)!!.value
+        } ?: ""
+    ).data.items
 
     override suspend fun getScholarships(): List<PortalScholarship> =
         service.getScholarships()

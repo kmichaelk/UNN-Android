@@ -33,6 +33,9 @@ class PortalFeedExtractor {
 
     private val gson = Gson()
 
+    private val patternVotePost = Pattern.compile("keySigned: 'BLOG_POST-([0-9]+).(.*?)'")
+    private val patternVoteComment = Pattern.compile("keySigned: 'BLOG_COMMENT-([0-9]+).(.*?)'")
+    //
     private val patternAvatar = Pattern.compile("background: url\\('(.*?)'\\)(.*?)")
 
     fun extractPost(raw: String): List<PortalFeedPost> = Jsoup.parse(raw).select(".feed-post-block").map {
@@ -56,7 +59,7 @@ class PortalFeedExtractor {
         val html = textContentRoot.html()
 
         PortalFeedPost(
-            id = Integer.parseInt(it.attr("data-livefeed-id")),
+            id = Integer.parseInt(it.selectFirst(".feed-post-more-link")!!.attr("data-bx-post-id")),
 
             entityXmlId = it.selectFirst(".feed-comments-block")!!.attr("data-bx-comments-entity-xml-id"),
 
@@ -90,6 +93,9 @@ class PortalFeedExtractor {
             },
 
             reactions = extractReactions(content.selectFirst(".feed-post-emoji-icon-container")),
+
+            voteKeyPart = extractVoteKey(it.selectFirst(".feed-post-emoji-top-panel-box")
+                ?.selectFirst("script"), patternVotePost),
 
             commentsCount = it.select(".feed-com-main-content").size +
                     (it.selectFirst(".feed-com-all")
@@ -134,7 +140,10 @@ class PortalFeedExtractor {
                 )
             },
 
-            reactions = extractReactions(it.selectFirst(".feed-post-emoji-icon-container"))
+            reactions = extractReactions(it.selectFirst(".feed-post-emoji-icon-container")),
+
+            voteKeyPart = extractVoteKey(it.selectFirst(".bx-ilike-wrap-block ~ script"),
+                patternVoteComment)
         )
     }
 
@@ -152,4 +161,17 @@ class PortalFeedExtractor {
         = wrapper?.let { it.attr("data-reactions-data").let { raw ->
         gson.fromJson(raw, object : TypeToken<Map<PortalFeedReaction, Int>>() {}.type)
     } } ?: mapOf()
+
+    private fun extractVoteKey(scriptEl: Element?, pattern: Pattern): String? {
+        if (scriptEl == null) {
+            return null
+        }
+
+        val matcher = pattern.matcher(scriptEl.data())
+        if (!matcher.find()) {
+            return null
+        }
+
+        return matcher.group(2)
+    }
 }

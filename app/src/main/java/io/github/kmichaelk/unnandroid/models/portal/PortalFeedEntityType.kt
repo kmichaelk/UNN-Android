@@ -17,30 +17,13 @@
 
 package io.github.kmichaelk.unnandroid.models.portal
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import com.google.gson.annotations.SerializedName
 
-@Parcelize
-data class PortalFeedPost(
-    override val id: Int,
-    val entityXmlId: String,
-    val author: PortalFeedUser,
-    val datetime: String,
+enum class PortalFeedEntityType {
 
-    val html: String,
+    @SerializedName("BLOG_POST")
+    Post,
 
-    val attachments: List<String>,
-    val files: List<PortalFeedAttachedFile>,
-
-    val receivers: List<PortalFeedPostReceiver>,
-    override val reactions: Map<PortalFeedReaction, Int>,
-    val voteKeyPart: String?,
-
-    val commentsCount: Int,
-    val views: Int,
-
-    val url: String,
-) : PortalFeedVoteable, Parcelable {
-    override fun getVoteKey() = "BLOG_POST-${id}.${voteKeyPart}"
-    override fun getEntityType() = PortalFeedEntityType.Post
+    @SerializedName("BLOG_COMMENT")
+    Comment,
 }

@@ -56,6 +56,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -69,26 +70,29 @@ import androidx.compose.ui.unit.sp
 import io.github.kmichaelk.unnandroid.api.service.PortalService
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
+import io.github.kmichaelk.unnandroid.models.portal.PortalUserRecord
 import io.github.kmichaelk.unnandroid.ui.composables.ImageSlider
 import io.github.kmichaelk.unnandroid.ui.composables.ex.HtmlText
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAttachedFileLink
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAvatar
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedReactionsStack
 import io.github.kmichaelk.unnandroid.ui.composables.feed.sheets.FeedPostReceiversBottomSheet
+import io.github.kmichaelk.unnandroid.ui.composables.feed.sheets.FeedReactionsBottomSheet
 
 private const val FLAG_RECEIVERS_OPEN = 1 shl 0
+private const val FLAG_REACTIONS_OPEN = 1 shl 1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedPost(
     post: PortalFeedPost,
     onDownload: (DownloadManager.Request) -> Unit,
-    onUserOpen: (PortalFeedUser) -> Unit,
+    onUserOpen: (PortalUserRecord) -> Unit,
     onOpenComments: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
 
-    var flags by rememberSaveable { mutableStateOf(0) }
+    var flags by rememberSaveable { mutableIntStateOf(0) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -153,7 +157,9 @@ fun FeedPost(
         if (post.reactions.isNotEmpty()) {
             Row(
                 modifier = Modifier
+                    .clip(MaterialTheme.shapes.small)
                     .fillMaxWidth()
+                    .clickable { flags = flags or FLAG_REACTIONS_OPEN }
                     .padding(horizontal = 12.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -165,6 +171,8 @@ fun FeedPost(
                 Text(
                     "Оценили ${post.reactions.values.sum()} человек",
                     fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
         }
@@ -206,6 +214,13 @@ fun FeedPost(
             receivers = post.receivers,
             onUserOpen = onUserOpen,
             onDismiss = { flags = flags and FLAG_RECEIVERS_OPEN.inv() }
+        )
+    }
+    if (flags and FLAG_REACTIONS_OPEN != 0) {
+        FeedReactionsBottomSheet(
+            entity = post,
+            onUserOpen = onUserOpen,
+            onDismiss = { flags = flags and FLAG_REACTIONS_OPEN.inv() }
         )
     }
 }

@@ -21,6 +21,8 @@ import io.github.kmichaelk.unnandroid.models.portal.PortalCurrentUser
 import io.github.kmichaelk.unnandroid.models.portal.PortalEmployee
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedComment
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedReaction
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedVoteable
 import io.github.kmichaelk.unnandroid.models.portal.PortalMarks
 import io.github.kmichaelk.unnandroid.models.portal.PortalOrder
 import io.github.kmichaelk.unnandroid.models.portal.PortalPaginatedResults
@@ -28,6 +30,7 @@ import io.github.kmichaelk.unnandroid.models.portal.PortalPlan
 import io.github.kmichaelk.unnandroid.models.portal.PortalScholarship
 import io.github.kmichaelk.unnandroid.models.portal.PortalStudentSearchResult
 import io.github.kmichaelk.unnandroid.models.portal.PortalUser
+import io.github.kmichaelk.unnandroid.models.portal.PortalUserRecord
 import okhttp3.OkHttpClient
 
 interface PortalClient {
@@ -40,6 +43,12 @@ interface PortalClient {
         firstPostLoadTimestamp: Long,
     ): List<PortalFeedPost>
     suspend fun getPostComments(entityXmlId: String): List<PortalFeedComment>
+
+    suspend fun getReactions(
+        entity: PortalFeedVoteable,
+        pageNumber: Int,
+        reaction: PortalFeedReaction?,
+    ): List<PortalUserRecord>
 
     suspend fun getScholarships(): List<PortalScholarship>
     suspend fun getOrders(): List<PortalOrder>

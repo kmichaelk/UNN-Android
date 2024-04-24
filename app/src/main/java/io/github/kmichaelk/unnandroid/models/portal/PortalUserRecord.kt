@@ -17,30 +17,8 @@
 
 package io.github.kmichaelk.unnandroid.models.portal
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
-data class PortalFeedPost(
-    override val id: Int,
-    val entityXmlId: String,
-    val author: PortalFeedUser,
-    val datetime: String,
-
-    val html: String,
-
-    val attachments: List<String>,
-    val files: List<PortalFeedAttachedFile>,
-
-    val receivers: List<PortalFeedPostReceiver>,
-    override val reactions: Map<PortalFeedReaction, Int>,
-    val voteKeyPart: String?,
-
-    val commentsCount: Int,
-    val views: Int,
-
-    val url: String,
-) : PortalFeedVoteable, Parcelable {
-    override fun getVoteKey() = "BLOG_POST-${id}.${voteKeyPart}"
-    override fun getEntityType() = PortalFeedEntityType.Post
+interface PortalUserRecord {
+    val bxId: Int
+    val name: String
+    val avatarUrl: String?
 }

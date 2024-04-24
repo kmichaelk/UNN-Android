@@ -18,7 +18,7 @@
 package io.github.kmichaelk.unnandroid.models.portal
 
 data class PortalFeedComment(
-    val id: Int,
+    override val id: Int,
     val author: PortalFeedUser,
     val datetime: String,
     val html: String,
@@ -26,5 +26,9 @@ data class PortalFeedComment(
     val attachments: List<String>,
     val files: List<PortalFeedAttachedFile>,
 
-    val reactions: Map<PortalFeedReaction, Int>,
-)
+    override val reactions: Map<PortalFeedReaction, Int>,
+    val voteKeyPart: String?
+) : PortalFeedVoteable {
+    override fun getVoteKey() = "BLOG_COMMENT-${id}.${voteKeyPart}"
+    override fun getEntityType() = PortalFeedEntityType.Comment
+}

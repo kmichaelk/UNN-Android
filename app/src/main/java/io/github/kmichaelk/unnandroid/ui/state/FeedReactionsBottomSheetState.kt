@@ -15,14 +15,22 @@
  * along with UNN-Android.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.kmichaelk.unnandroid.models.portal
+package io.github.kmichaelk.unnandroid.ui.state
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedReaction
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedVoteable
+import io.github.kmichaelk.unnandroid.models.portal.PortalUserRecord
 
-@Parcelize
-data class PortalFeedUser(
-    override val bxId: Int,
-    override val name: String,
-    override val avatarUrl: String?,
-) : PortalUserRecord, Parcelable
+data class FeedReactionsBottomSheetState(
+    val entity: PortalFeedVoteable? = null,
+    val data: Map<PortalFeedReaction, ReactionData> = mapOf(),
+
+    val error: UiError? = null,
+) {
+    data class ReactionData(
+        val total: Int,
+        val page: Int = -1,
+        val complete: Boolean = false,
+        val users: List<PortalUserRecord> = listOf(),
+    )
+}

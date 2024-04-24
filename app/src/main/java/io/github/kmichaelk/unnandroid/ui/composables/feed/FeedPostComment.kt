@@ -19,7 +19,6 @@ package io.github.kmichaelk.unnandroid.ui.composables.feed
 
 import android.app.DownloadManager
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,9 +28,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,19 +46,24 @@ import androidx.compose.ui.unit.sp
 import io.github.kmichaelk.unnandroid.api.service.PortalService
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedComment
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
+import io.github.kmichaelk.unnandroid.models.portal.PortalUserRecord
 import io.github.kmichaelk.unnandroid.ui.composables.ImageSlider
 import io.github.kmichaelk.unnandroid.ui.composables.ex.HtmlText
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAttachedFileLink
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAvatar
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedReactionsStack
+import io.github.kmichaelk.unnandroid.ui.composables.feed.sheets.FeedReactionsBottomSheet
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedPostComment(
     comment: PortalFeedComment,
-    onUserOpen: (PortalFeedUser) -> Unit,
+    onUserOpen: (PortalUserRecord) -> Unit,
     onDownload: (DownloadManager.Request) -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
+
+    var reactionsOpen by rememberSaveable { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -83,13 +92,15 @@ fun FeedPostComment(
                 Row(
                     modifier = Modifier
                         .clip(MaterialTheme.shapes.medium)
-                        .clickable {  }
-                        .padding(4.dp),
+                        .clickable { reactionsOpen = true }
+                        .padding(horizontal = 6.dp, vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         "${comment.reactions.values.sum()}",
                         fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
                     )
                     Spacer(Modifier.width(2.dp))
                     FeedReactionsStack(
@@ -135,5 +146,13 @@ fun FeedPostComment(
         }
 
         Spacer(Modifier.height(16.dp))
+    }
+
+    if (reactionsOpen) {
+        FeedReactionsBottomSheet(
+            entity = comment,
+            onUserOpen = onUserOpen,
+            onDismiss = { reactionsOpen = false }
+        )
     }
 }
