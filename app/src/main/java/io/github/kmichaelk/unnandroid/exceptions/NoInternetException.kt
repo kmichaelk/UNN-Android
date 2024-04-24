@@ -21,5 +21,5 @@ import java.io.IOException
 
 class NoInternetException(
     message: String = "Internet connection is unavailable",
-    cause: Exception? = null
+    cause: Throwable? = null
 ) : IOException(message, cause)

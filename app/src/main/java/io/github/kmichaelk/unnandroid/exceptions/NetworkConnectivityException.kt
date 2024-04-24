@@ -21,5 +21,5 @@ import java.io.IOException
 
 class NetworkConnectivityException(
     message: String = "Connectivity error",
-    cause: Exception? = null
+    cause: Throwable? = null
 ) : IOException(message, cause)
