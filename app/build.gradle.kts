@@ -93,6 +93,7 @@ dependencies {
 
     val verOkhttp = "4.12.0"
     implementation("com.squareup.okhttp3:okhttp:$verOkhttp")
+    implementation("com.squareup.okhttp3:okhttp-tls:$verOkhttp")
     implementation("com.squareup.okhttp3:logging-interceptor:$verOkhttp")
 
     implementation("org.jsoup:jsoup:1.17.2")

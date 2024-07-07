@@ -24,6 +24,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.kmichaelk.unnandroid.network.NetworkConnectionInterceptor
+import io.github.kmichaelk.unnandroid.network.buildUnnCertificates
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
@@ -42,6 +43,12 @@ class NetworkModule {
     fun provideBaseOkHttpClient(
         @ApplicationContext context: Context
     ): OkHttpClient = OkHttpClient.Builder()
+        .apply {
+            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.Q) {
+                val certificates = buildUnnCertificates()
+                sslSocketFactory(certificates.sslSocketFactory(), certificates.trustManager)
+            }
+        }
         .protocols(listOf(Protocol.HTTP_2, Protocol.HTTP_1_1))
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)
