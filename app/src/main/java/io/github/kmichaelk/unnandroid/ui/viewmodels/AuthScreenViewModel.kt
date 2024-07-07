@@ -53,14 +53,14 @@ class AuthScreenViewModel @Inject constructor(
             try {
                 isAuthorized = authManager.login(_uiState.value.username, _uiState.value.password)
             } catch (ex: IOException) {
-                Timber.d("IO auth error", ex)
+                Timber.e("IO auth error", ex)
                 _uiState.update { it.copy(
                     error = "Ошибка соединения, попробуйте еще раз",
                     isLoading = false
                 ) }
                 return@launch
             } catch (ex: Exception) {
-                Timber.d("Unknown auth error", ex)
+                Timber.e("Unknown auth error", ex)
                 _uiState.update { it.copy(
                     error = "Неизвестная ошибка, попробуйте еще раз",
                     isLoading = false
