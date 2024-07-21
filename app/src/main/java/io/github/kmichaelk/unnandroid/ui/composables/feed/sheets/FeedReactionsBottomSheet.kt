@@ -79,6 +79,7 @@ fun FeedReactionsBottomSheet(
     if (state.entity == null) return
 
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
+    var targetTabIndex by rememberSaveable { mutableIntStateOf(-1) }
     val pagerState = rememberPagerState { state.data.keys.size }
 
     val checkLoaded = { idx: Int ->
@@ -87,12 +88,18 @@ fun FeedReactionsBottomSheet(
             viewModel.loadMore(entry.key)
         }
     }
-    
+
     LaunchedEffect(selectedTabIndex) {
         pagerState.animateScrollToPage(selectedTabIndex)
         checkLoaded(selectedTabIndex)
     }
     LaunchedEffect(pagerState.currentPage) {
+        if (targetTabIndex != -1) {
+            if (targetTabIndex != pagerState.currentPage) {
+                return@LaunchedEffect
+            }
+            targetTabIndex = -1
+        }
         selectedTabIndex = pagerState.currentPage
         checkLoaded(selectedTabIndex)
     }
@@ -113,7 +120,10 @@ fun FeedReactionsBottomSheet(
                 state.data.entries.forEachIndexed { index, item ->
                     Tab(
                         selected = (index == selectedTabIndex),
-                        onClick = { selectedTabIndex = index },
+                        onClick = {
+                            targetTabIndex = index
+                            selectedTabIndex = index
+                        },
                     ) {
                         Row(
                             modifier = Modifier.padding(8.dp),
@@ -149,7 +159,7 @@ fun FeedReactionsBottomSheet(
                             leadingContent = {
                                 Box(Modifier.size(32.dp)) {
                                     FeedAvatar(url = it.avatarUrl)
-                                } 
+                                }
                             }
                         )
                     }
