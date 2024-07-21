@@ -17,6 +17,7 @@
 
 package io.github.kmichaelk.unnandroid.api
 
+import io.github.kmichaelk.unnandroid.models.portal.PortalCommentsPage
 import io.github.kmichaelk.unnandroid.models.portal.PortalCurrentUser
 import io.github.kmichaelk.unnandroid.models.portal.PortalEmployee
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedComment
@@ -42,7 +43,10 @@ interface PortalClient {
         loadedPostsIds: List<Int>,
         firstPostLoadTimestamp: Long,
     ): List<PortalFeedPost>
-    suspend fun getPostComments(entityXmlId: String): List<PortalFeedComment>
+    suspend fun getPostComments(
+        entityXmlId: String,
+        pageNumber: Int,
+    ): PortalCommentsPage
 
     suspend fun getReactions(
         entity: PortalFeedVoteable,

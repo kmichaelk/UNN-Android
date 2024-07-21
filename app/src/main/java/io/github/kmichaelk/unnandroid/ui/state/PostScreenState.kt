@@ -15,14 +15,14 @@
  * along with UNN-Android.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.kmichaelk.unnandroid.models.portal
+package io.github.kmichaelk.unnandroid.ui.state
 
-import com.google.gson.annotations.SerializedName
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedComment
 
-data class PortalPostCommentsResponse(
-    @SerializedName("messageList")
-    val messageList: String,
+data class PostScreenState(
+    val data: List<PortalFeedComment>? = null,
+    val error: UiError? = null,
 
-    @SerializedName("navigation")
-    val navigation: String
+    val page: Int = -1,
+    val totalPages: Int = -1,
 )

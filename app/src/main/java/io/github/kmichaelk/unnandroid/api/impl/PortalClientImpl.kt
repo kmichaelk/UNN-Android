@@ -25,6 +25,7 @@ import io.github.kmichaelk.unnandroid.api.auth.AuthDataHolder
 import io.github.kmichaelk.unnandroid.api.auth.PortalAuthInterceptor
 import io.github.kmichaelk.unnandroid.api.extractors.PortalFeedExtractor
 import io.github.kmichaelk.unnandroid.api.service.PortalService
+import io.github.kmichaelk.unnandroid.models.portal.PortalCommentsPage
 import io.github.kmichaelk.unnandroid.models.portal.PortalCurrentUser
 import io.github.kmichaelk.unnandroid.models.portal.PortalEmployee
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedComment
@@ -100,11 +101,19 @@ class PortalClientImpl @Inject constructor(
     ).data.html)
 
     override suspend fun getPostComments(
-        entityXmlId: String
-    ): List<PortalFeedComment> = feedExtractor.extractComments(service.getPostComments(
-        entityXmlId = entityXmlId,
-        postId = Integer.parseInt(entityXmlId.replace("BLOG_", "")),
-    ).messageList)
+        entityXmlId: String,
+        pageNumber: Int
+    ): PortalCommentsPage {
+        val data = service.getPostComments(
+            entityXmlId = entityXmlId,
+            postId = Integer.parseInt(entityXmlId.replace("BLOG_", "")),
+            pageNumber = pageNumber
+        )
+        return PortalCommentsPage(
+            comments = feedExtractor.extractComments(data.messageList),
+            hasPrev = data.navigation.isNotEmpty()
+        )
+    }
 
     override suspend fun getReactions(
         entity: PortalFeedVoteable,

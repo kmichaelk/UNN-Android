@@ -28,6 +28,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.OpenInNew
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -55,12 +56,11 @@ import coil.compose.LocalImageLoader
 import coil.imageLoader
 import io.github.kmichaelk.unnandroid.api.service.PortalService
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
-import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
 import io.github.kmichaelk.unnandroid.models.portal.PortalUserRecord
 import io.github.kmichaelk.unnandroid.ui.AppScreen
 import io.github.kmichaelk.unnandroid.ui.LocalNavController
 import io.github.kmichaelk.unnandroid.ui.composables.FancyError
-import io.github.kmichaelk.unnandroid.ui.composables.FancyLoading
+import io.github.kmichaelk.unnandroid.ui.composables.LoadMore
 import io.github.kmichaelk.unnandroid.ui.composables.feed.FeedPost
 import io.github.kmichaelk.unnandroid.ui.composables.feed.FeedPostComment
 import io.github.kmichaelk.unnandroid.ui.extensions.popBackStackLifecycleAware
@@ -132,26 +132,22 @@ fun PostScreen(
                 .nestedScroll(pullToRefreshState.nestedScrollConnection)
         ) {
             CompositionLocalProvider(LocalImageLoader provides viewModel.imageLoader) {
-                if (state.error != null) {
-                    FancyError(state.error!!, onRetry = {
-                        pullToRefreshState.startRefresh()
-                    })
-                } else if (state.data != null) {
-                    val comments = state.data!!
-                    LazyColumn {
-                        item {
-                            FeedPost(
-                                post = post,
-                                onUserOpen = onUserOpen,
-                                onOpenComments = {},
-                                onDownload = viewModel::authorizeDownload
-                            )
-                            Spacer(Modifier.height(8.dp))
-                        }
+                LazyColumn {
+                    item {
+                        FeedPost(
+                            post = post,
+                            onUserOpen = onUserOpen,
+                            onOpenComments = {},
+                            onDownload = viewModel::authorizeDownload
+                        )
+                        Spacer(Modifier.height(8.dp))
+                    }
+                    state.data?.let { comments ->
                         items(comments, key = { it.id }) {
-                            ElevatedCard(Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp, horizontal = 8.dp)
+                            ElevatedCard(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp, horizontal = 8.dp)
                             ) {
                                 FeedPostComment(
                                     comment = it,
@@ -160,12 +156,28 @@ fun PostScreen(
                                 )
                             }
                         }
+                        if (state.page < state.totalPages) {
+                            item {
+                                LoadMore(
+                                    onLoadMore = { viewModel.loadMore() },
+                                    error = state.error
+                                )
+                                LaunchedEffect(Unit) {
+                                    viewModel.loadMore()
+                                }
+                            }
+                        }
                         item {
                             Spacer(Modifier.height(32.dp))
                         }
+                    } ?: item {
+                        Spacer(Modifier.height(24.dp))
+                        state.error?.let {
+                            FancyError(it, onRetry = {
+                                pullToRefreshState.startRefresh()
+                            })
+                        } ?: CircularProgressIndicator()
                     }
-                } else {
-                    FancyLoading()
                 }
                 PullToRefreshContainer(
                     modifier = Modifier.align(Alignment.TopCenter),
