@@ -342,7 +342,7 @@ fun ScheduleScreen(
                             Text(
                                 "Выберите группу для просмотра расписания",
                                 textAlign = TextAlign.Center,
-                                modifier = Modifier.width(200.dp)
+                                modifier = Modifier.width(220.dp)
                             )
                         }
                     } else if (state.schedule == null) {
