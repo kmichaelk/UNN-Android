@@ -39,14 +39,14 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPostReceiver
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPostRecipient
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
 import io.github.kmichaelk.unnandroid.models.portal.PortalUserRecord
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FeedPostReceiversBottomSheet(
-    receivers: List<PortalFeedPostReceiver>,
+fun FeedPostRecipientsBottomSheet(
+    recipients: List<PortalFeedPostRecipient>,
     onUserOpen: (PortalUserRecord) -> Unit,
     sheetState: SheetState = rememberModalBottomSheetState(),
     onDismiss: () -> Unit,
@@ -62,7 +62,7 @@ fun FeedPostReceiversBottomSheet(
                 style = MaterialTheme.typography.titleMedium
             )
             LazyColumn(Modifier.fillMaxSize()) {
-                items(receivers) {
+                items(recipients) {
                     ListItem(
                         leadingContent = {
                             Icon(

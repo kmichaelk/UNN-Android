@@ -21,7 +21,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class PortalFeedPostReceiver(
+data class PortalFeedPostRecipient(
     val id: Int,
     val name: String,
     val type: String,

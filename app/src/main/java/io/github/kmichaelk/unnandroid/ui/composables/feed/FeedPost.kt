@@ -57,7 +57,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -69,14 +68,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.kmichaelk.unnandroid.api.service.PortalService
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
-import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
 import io.github.kmichaelk.unnandroid.models.portal.PortalUserRecord
 import io.github.kmichaelk.unnandroid.ui.composables.ImageSlider
 import io.github.kmichaelk.unnandroid.ui.composables.ex.HtmlText
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAttachedFileLink
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedAvatar
 import io.github.kmichaelk.unnandroid.ui.composables.feed.atoms.FeedReactionsStack
-import io.github.kmichaelk.unnandroid.ui.composables.feed.sheets.FeedPostReceiversBottomSheet
+import io.github.kmichaelk.unnandroid.ui.composables.feed.sheets.FeedPostRecipientsBottomSheet
 import io.github.kmichaelk.unnandroid.ui.composables.feed.sheets.FeedReactionsBottomSheet
 
 private const val FLAG_RECEIVERS_OPEN = 1 shl 0
@@ -185,7 +183,7 @@ fun FeedPost(
                 TextButton(onClick = { flags = flags or FLAG_RECEIVERS_OPEN }) {
                     Icon(Icons.Default.People, contentDescription = "Получатели")
                     Spacer(Modifier.width(6.dp))
-                    Text("${post.receivers.size}")
+                    Text("${post.recipients.size}")
                 }
             }
 
@@ -208,8 +206,8 @@ fun FeedPost(
     }
 
     if (flags and FLAG_RECEIVERS_OPEN != 0) {
-        FeedPostReceiversBottomSheet(
-            receivers = post.receivers,
+        FeedPostRecipientsBottomSheet(
+            recipients = post.recipients,
             onUserOpen = onUserOpen,
             onDismiss = { flags = flags and FLAG_RECEIVERS_OPEN.inv() }
         )

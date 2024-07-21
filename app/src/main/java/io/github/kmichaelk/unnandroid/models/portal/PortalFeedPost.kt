@@ -32,7 +32,7 @@ data class PortalFeedPost(
     val attachments: List<String>,
     val files: List<PortalFeedAttachedFile>,
 
-    val receivers: List<PortalFeedPostReceiver>,
+    val recipients: List<PortalFeedPostRecipient>,
     override val reactions: Map<PortalFeedReaction, Int>,
     val voteKeyPart: String?,
 

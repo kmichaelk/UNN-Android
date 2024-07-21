@@ -22,7 +22,7 @@ import com.google.gson.reflect.TypeToken
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedAttachedFile
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedComment
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPost
-import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPostReceiver
+import io.github.kmichaelk.unnandroid.models.portal.PortalFeedPostRecipient
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedReaction
 import io.github.kmichaelk.unnandroid.models.portal.PortalFeedUser
 import org.jsoup.Jsoup
@@ -84,8 +84,8 @@ class PortalFeedExtractor {
                 )
             },
 
-            receivers = it.select(".feed-add-post-destination-new").map { dst ->
-                PortalFeedPostReceiver(
+            recipients = it.select(".feed-add-post-destination-new").map { dst ->
+                PortalFeedPostRecipient(
                     id = Integer.parseInt(dst.attr("data-bx-entity-id")),
                     name = dst.text(),
                     type = dst.attr("data-bx-entity-type")
